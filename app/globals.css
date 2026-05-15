@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f3ea;
+  --foreground: #102022;
+  --muted: #66736f;
+  --line: #d8d1c3;
+  --teal: #075e63;
+  --teal-dark: #062f35;
+  --amber: #c8841d;
+  --coral: #bf5142;
+  --paper: #fffaf0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(7, 94, 99, 0.14), transparent 32rem),
+    linear-gradient(180deg, #fffaf0 0%, var(--background) 48%, #eef6f4 100%);
+  color: var(--foreground);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+::selection {
+  background: rgba(200, 132, 29, 0.3);
+}
+
+a {
+  color: inherit;
+}
+
+.article-body {
+  color: #223333;
+  font-size: 1.04rem;
+  line-height: 1.85;
+}
+
+.article-body h2,
+.article-body h3 {
+  color: var(--foreground);
+  font-weight: 750;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-body h2 {
+  font-size: 1.45rem;
+}
+
+.article-body h3 {
+  font-size: 1.2rem;
+}
+
+.article-body p,
+.article-body ul,
+.article-body ol {
+  margin-bottom: 1rem;
+}
+
+.article-body ul,
+.article-body ol {
+  padding-left: 1.35rem;
+}
+
+.article-body li {
+  margin-bottom: 0.35rem;
+}
+
+.article-body code {
+  border-radius: 0.35rem;
+  background: rgba(7, 94, 99, 0.09);
+  padding: 0.1rem 0.35rem;
+  color: #075e63;
+}
