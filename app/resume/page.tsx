@@ -17,8 +17,8 @@ export default function ResumePage() {
           <div>
             <h1 className="text-5xl font-semibold text-[#102022]">Zitao Xing</h1>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-[#31413f]">
-              Mathematics undergraduate at Xiamen University focused on optimization,
-              operations research, differential equations, and AI-assisted mathematics education.
+              Mathematics undergraduate at Xiamen University focused on applied mathematics,
+              machine learning, retrieval-augmented generation, operations research, and graph algorithms.
             </p>
           </div>
           <Link

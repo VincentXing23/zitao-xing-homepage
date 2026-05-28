@@ -10,13 +10,13 @@ export const metadata: Metadata = {
     template: '%s | Zitao Xing',
   },
   description:
-    'Zitao Xing is a mathematics undergraduate at Xiamen University interested in optimization, operations research, differential equations, and AI-assisted mathematics education.',
+    'Zitao Xing is a mathematics undergraduate at Xiamen University interested in applied mathematics, machine learning, retrieval-augmented generation, operations research, and graph algorithms.',
   authors: [{ name: 'Zitao Xing' }],
   creator: 'Zitao Xing',
   openGraph: {
     title: 'Zitao Xing',
     description:
-      'Mathematics undergraduate focused on optimization, operations research, differential equations, and AI-assisted mathematics education.',
+      'Mathematics undergraduate focused on applied mathematics, machine learning, retrieval-augmented generation, operations research, and graph algorithms.',
     type: 'website',
     images: ['/static/images/math-ai-hero.png'],
   },

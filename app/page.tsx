@@ -18,7 +18,7 @@ import { contact, education, experiences, honors, profileSummary, skillGroups } 
 
 export default function HomePage() {
   const latestPosts = getAllPosts().slice(0, 2)
-  const project = experiences[0]
+  const project = experiences[1]
 
   return (
     <>
@@ -36,7 +36,7 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#075e63]/25 bg-white/58 px-4 py-2 text-sm font-semibold text-[#075e63]">
               <Sigma size={17} aria-hidden="true" />
-              Mathematics · Optimization · AI Education
+              Applied Mathematics · Machine Learning · GraphRAG
             </p>
             <h1 className="max-w-3xl text-5xl font-semibold leading-[1.04] text-[#102022] sm:text-6xl">
               Zitao Xing
@@ -84,9 +84,9 @@ export default function HomePage() {
       <section className="border-y border-black/10 bg-[#102022] text-white">
         <div className="mx-auto grid max-w-7xl gap-4 px-5 py-7 sm:grid-cols-3 sm:px-8">
           {[
-            ['Current focus', 'AI-based mathematics teaching assistant'],
-            ['Academic base', 'Bachelor of Mathematics at XMU'],
-            ['Research interests', 'Optimization, OR, differential equations'],
+            ['Current focus', 'Functional analysis course GraphRAG'],
+            ['Academic base', 'B.S. Candidate in Mathematics at XMU'],
+            ['Research interests', 'ML, RAG, OR, graph algorithms'],
           ].map(([label, value]) => (
             <div key={label} className="min-h-24 border-l border-white/18 pl-5">
               <p className="text-xs font-semibold uppercase text-[#f0b54f]">{label}</p>
@@ -101,7 +101,7 @@ export default function HomePage() {
           <div>
             <p className="text-sm font-semibold uppercase text-[#bf5142]">Education</p>
             <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Mathematical training across Xiamen, Shanghai, and San Diego.
+              Mathematical training across Xiamen and San Diego.
             </h2>
           </div>
           <div className="grid gap-4">
@@ -130,7 +130,7 @@ export default function HomePage() {
           <div className="mb-10 max-w-3xl">
             <p className="text-sm font-semibold uppercase text-[#075e63]">Project Spotlight</p>
             <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Building AI support for functional analysis learning.
+              Exploring GraphRAG support for functional analysis learning.
             </h2>
           </div>
           <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
@@ -157,9 +157,9 @@ export default function HomePage() {
             </article>
             <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
               {[
-                ['Knowledge base', 'Functional analysis course content organized for retrieval.'],
-                ['Algorithm design', 'Enhanced retrieval-generation workflow for course Q&A.'],
-                ['Team leadership', 'Planning and coordinating a four-member development team.'],
+                ['Course graph', 'Functional analysis knowledge organized for graph-based retrieval.'],
+                ['RAG verification', 'Feasibility checks for retrieval-augmented mathematical learning.'],
+                ['Project leadership', 'Coordinating research planning, construction, and verification.'],
               ].map(([label, detail]) => (
                 <div key={label} className="rounded-lg border border-black/10 bg-[#fffaf0] p-5">
                   <p className="font-semibold text-[#102022]">{label}</p>
@@ -176,7 +176,7 @@ export default function HomePage() {
           <div>
             <p className="text-sm font-semibold uppercase text-[#bf5142]">Experience</p>
             <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Academic programs, service, and applied work.
+              Academic programs, research projects, and applied work.
             </h2>
           </div>
           <Link
@@ -206,7 +206,7 @@ export default function HomePage() {
           <div>
             <p className="text-sm font-semibold uppercase text-[#075e63]">Skills & Interests</p>
             <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Tools for mathematical modeling and rigorous problem solving.
+              Tools for mathematical research, machine learning, and rigorous problem solving.
             </h2>
             <div className="mt-8 rounded-lg border border-[#c8841d]/35 bg-[#fff3dc] p-5">
               <div className="flex items-center gap-3">
@@ -224,9 +224,9 @@ export default function HomePage() {
             {skillGroups.map((group) => (
               <article key={group.name} className="rounded-lg border border-black/10 bg-white p-5">
                 <div className="flex items-center gap-3">
-                  {group.name === 'Programming' ? (
+                  {group.name.includes('Programming') ? (
                     <Code2 size={20} className="text-[#075e63]" aria-hidden="true" />
-                  ) : group.name === 'Interests' ? (
+                  ) : group.name.includes('Interests') ? (
                     <BookOpen size={20} className="text-[#075e63]" aria-hidden="true" />
                   ) : (
                     <GraduationCap size={20} className="text-[#075e63]" aria-hidden="true" />
