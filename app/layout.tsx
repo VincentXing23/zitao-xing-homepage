@@ -4,19 +4,19 @@ import { Header } from '@/components/Header'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://zitao-xing.local'),
+  metadataBase: new URL('https://zitao-xing-homepage.vercel.app'),
   title: {
     default: 'Zitao Xing',
     template: '%s | Zitao Xing',
   },
   description:
-    'Zitao Xing is a mathematics undergraduate at Xiamen University interested in applied mathematics, machine learning, retrieval-augmented generation, operations research, and graph algorithms.',
+    'Zitao Xing is an incoming M.S. student in Applied Mathematics at Xiamen University working on numerical methods, machine learning, GraphRAG, and graph algorithms.',
   authors: [{ name: 'Zitao Xing' }],
   creator: 'Zitao Xing',
   openGraph: {
     title: 'Zitao Xing',
     description:
-      'Mathematics undergraduate focused on applied mathematics, machine learning, retrieval-augmented generation, operations research, and graph algorithms.',
+      'Incoming applied mathematics graduate student working on numerical methods, machine learning, GraphRAG, and graph algorithms.',
     type: 'website',
     images: ['/static/images/math-ai-hero.png'],
   },

@@ -9,7 +9,7 @@ export function Footer() {
         <div>
           <p className="text-lg font-semibold">Zitao Xing</p>
           <p className="mt-1 max-w-xl text-sm leading-6 text-white/70">
-            Mathematics, optimization, and AI-assisted learning systems.
+            Applied mathematics, numerical methods, and graph-enhanced AI systems.
           </p>
         </div>
         <div className="flex flex-wrap gap-3 text-sm">

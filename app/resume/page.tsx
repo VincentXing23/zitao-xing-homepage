@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Download, Mail, Phone } from 'lucide-react'
-import { contact, education, experiences, honors, skillGroups } from '@/lib/profile'
+import { contact, education, experiences, honors, profileSummary, skillGroups } from '@/lib/profile'
 
 export const metadata: Metadata = {
   title: 'Resume',
-  description: 'Structured resume for Zitao Xing, mathematics undergraduate at Xiamen University.',
+  description: 'Resume for Zitao Xing, an incoming applied mathematics graduate student at Xiamen University.',
 }
 
 export default function ResumePage() {
@@ -16,10 +16,7 @@ export default function ResumePage() {
         <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <h1 className="text-5xl font-semibold text-[#102022]">Zitao Xing</h1>
-            <p className="mt-4 max-w-3xl text-lg leading-8 text-[#31413f]">
-              Mathematics undergraduate at Xiamen University focused on applied mathematics,
-              machine learning, retrieval-augmented generation, operations research, and graph algorithms.
-            </p>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-[#31413f]">{profileSummary}</p>
           </div>
           <Link
             href={contact.resumeHref}

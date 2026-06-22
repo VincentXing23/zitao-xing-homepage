@@ -38,5 +38,14 @@ Public assets:
 ## Content
 
 - Resume PDF: `public/static/files/zitao-xing-resume.pdf`
+- English resume source: `Z_Xing_resume/main.tex`
+- Original Chinese resume source: `Z_Xing_resume/main-zh.tex`
 - Hero image: `public/static/images/math-ai-hero.png`
 - Blog posts: `content/blog/*.mdx`
+
+Compile the English resume with:
+
+```bash
+cd Z_Xing_resume
+latexmk -xelatex main.tex
+```

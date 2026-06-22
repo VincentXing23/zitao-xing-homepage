@@ -10,16 +10,23 @@ export const education = [
   {
     institution: 'Xiamen University',
     location: 'Xiamen, China',
-    role: 'B.S. Candidate in Mathematics',
-    period: 'Sep. 2022 - Present',
+    role: 'Incoming M.S. in Applied Mathematics (Operations Research)',
+    period: 'Starting Sep. 2026',
+    detail: 'Admitted through recommendation-based selection.',
+  },
+  {
+    institution: 'Xiamen University',
+    location: 'Xiamen, China',
+    role: 'B.S. in Mathematics',
+    period: 'Sep. 2022 - Jun. 2026',
     detail: 'GPA 3.4/4.0, average score 85/100, class ranking 16/49.',
   },
   {
     institution: 'University of California San Diego',
     location: 'San Diego, California, USA',
-    role: 'UPS Program',
+    role: 'University and Professional Studies (UPS) Program',
     period: 'Sep. 2024 - Dec. 2024',
-    detail: 'Short-term academic program with continued focus on mathematics coursework.',
+    detail: 'Completed a full-time university-credit study program at UC San Diego.',
   },
 ]
 
@@ -31,19 +38,24 @@ export const experiences = [
     role: 'Participant',
     period: 'Jul. 2025 - Aug. 2025',
     bullets: [
-      'Participated in an interdisciplinary AI + science and engineering summer camp.',
-      'Engaged with applied artificial intelligence topics and collaborative technical learning.',
+      'Completed intensive training in deep learning and AI for Science, including neural-network architectures, backpropagation, optimization, loss design, model training, and evaluation.',
+      'Built and trained a neural-network model, contributing to data preprocessing, architecture design, hyperparameter tuning, and experimental analysis.',
+      'Studied GPU parallel computing and CUDA fundamentals, including thread organization, memory management, and parallel acceleration for scientific computing.',
+      'Used Python and deep-learning frameworks to analyze how hyperparameters affect model convergence and generalization.',
     ],
   },
   {
     title: 'Functional Analysis Course GraphRAG: Construction and Feasibility Verification',
-    organization: 'National Research Climbing Program',
+    organization: 'National-Level Undergraduate Research Training Project',
     location: 'Xiamen, China',
     role: 'Project Leader',
     period: 'May 2025 - May 2026',
     bullets: [
-      'Lead the construction of a Functional Analysis course GraphRAG system for knowledge organization and retrieval.',
-      'Coordinate feasibility verification for retrieval-augmented generation in mathematical learning contexts.',
+      'Led a national-level project to build a knowledge-graph-enhanced retrieval system for a Functional Analysis course, coordinating planning, technical integration, validation, and presentation.',
+      'Structured course resources into chapters, concepts, theorems, worked examples, and questions, with explicit relationships among object types.',
+      'Built a course knowledge graph containing 95 objects and 216 relationships.',
+      'Developed a local GraphRAG demo with Neo4j, Qdrant, BAAI/bge-m3, BAAI/bge-reranker-v2-m3, and Flask.',
+      'Validated an end-to-end pipeline spanning semantic retrieval, vector recall, reranking, graph-context expansion, and evidence-chain display.',
     ],
   },
   {
@@ -53,8 +65,9 @@ export const experiences = [
     role: 'Team Member',
     period: 'Apr. 2025 - Apr. 2026',
     bullets: [
-      'Contribute to a research project on numerical methods for partial differential equations.',
-      'Support mathematical modeling, implementation, and experimental verification work.',
+      'Investigated numerical solutions of the Poisson equation on sector domains, focusing on corner singularities and nonsmooth structures.',
+      'Helped design a Müntz-type basis method adapted to corner singularities and compared it with algebraic-power bases and a neural-network-assisted baseline.',
+      'Conducted one-dimensional approximation, single- and double-mode Poisson benchmark, and singular-exponent ablation experiments.',
     ],
   },
   {
@@ -63,14 +76,18 @@ export const experiences = [
     location: 'Shanghai, China',
     role: 'Intern',
     period: 'Jan. 2025 - Mar. 2025',
-    bullets: ['Gained exposure to financial services workflows and regional business operations.'],
+    bullets: [
+      'Supported regional operations by organizing fund-product, market, client-service, and institutional-workflow materials.',
+      'Used Excel and PowerPoint to consolidate, clean, format, and present market information, product materials, and peer-company data.',
+      'Assisted with meeting preparation, client-document archiving, roadshows, and training materials.',
+    ],
   },
 ]
 
 export const honors = [
-  '2023 FLTRP · ETIC Cup National English Competition, Provincial Second Prize',
+  '2023 “FLTRP ETIC Cup” Understanding Contemporary China National Foreign Language Contest, Provincial Second Prize',
   '2023 Contemporary Undergraduate Mathematical Contest in Modeling, Provincial Third Prize',
-  'AiXIA Hackathon, Agent Track, Third Prize',
+  'AiXIA Innovation: Xiamen Hackathon, AI for Science / Agent Track, Third Prize',
 ]
 
 export const skillGroups = [
@@ -99,4 +116,4 @@ export const skillGroups = [
 ]
 
 export const profileSummary =
-  'Mathematics undergraduate at Xiamen University interested in applied mathematics, machine learning, retrieval-augmented generation, operations research, and graph algorithms.'
+  'Incoming M.S. student in Applied Mathematics (Operations Research) at Xiamen University, working across numerical methods, machine learning, GraphRAG, and graph algorithms.'

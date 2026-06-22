@@ -84,9 +84,9 @@ export default function HomePage() {
       <section className="border-y border-black/10 bg-[#102022] text-white">
         <div className="mx-auto grid max-w-7xl gap-4 px-5 py-7 sm:grid-cols-3 sm:px-8">
           {[
-            ['Current focus', 'Functional analysis course GraphRAG'],
-            ['Academic base', 'B.S. Candidate in Mathematics at XMU'],
-            ['Research interests', 'ML, RAG, OR, graph algorithms'],
+            ['Current focus', 'GraphRAG for functional analysis and numerical PDE methods'],
+            ['Next step', 'Incoming M.S. in Operations Research at XMU · Sep. 2026'],
+            ['Research toolkit', 'Neo4j, Qdrant, embeddings, reranking, CUDA'],
           ].map(([label, value]) => (
             <div key={label} className="min-h-24 border-l border-white/18 pl-5">
               <p className="text-xs font-semibold uppercase text-[#f0b54f]">{label}</p>
@@ -101,7 +101,7 @@ export default function HomePage() {
           <div>
             <p className="text-sm font-semibold uppercase text-[#bf5142]">Education</p>
             <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Mathematical training across Xiamen and San Diego.
+              Mathematics training in Xiamen and San Diego, with graduate study ahead.
             </h2>
           </div>
           <div className="grid gap-4">
@@ -157,9 +157,9 @@ export default function HomePage() {
             </article>
             <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
               {[
-                ['Course graph', 'Functional analysis knowledge organized for graph-based retrieval.'],
-                ['RAG verification', 'Feasibility checks for retrieval-augmented mathematical learning.'],
-                ['Project leadership', 'Coordinating research planning, construction, and verification.'],
+                ['Course graph', '95 course objects connected by 216 knowledge-graph relationships.'],
+                ['Retrieval pipeline', 'Vector recall, reranking, graph expansion, and evidence-chain display.'],
+                ['Technical stack', 'Neo4j, Qdrant, BGE embeddings and reranker, Flask.'],
               ].map(([label, detail]) => (
                 <div key={label} className="rounded-lg border border-black/10 bg-[#fffaf0] p-5">
                   <p className="font-semibold text-[#102022]">{label}</p>
