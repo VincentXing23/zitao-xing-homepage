@@ -1,0 +1,76 @@
+---
+title: "从队列开始理解 BFS"
+date: "2026-07-24"
+summary: "用一个简单的图遍历例子理解广度优先搜索、队列和最短路径。"
+tags:
+  - algorithms
+  - graph
+  - Python
+---
+
+## 什么是 BFS？
+
+BFS（Breadth-First Search，广度优先搜索）是一种按“距离由近到远”访问节点的图遍历算法。它从一个起点出发，先访问所有相邻节点，再访问下一层节点。
+
+BFS 的核心数据结构是**队列**：新发现的节点放到队尾，处理节点时从队首取出。
+
+## 基本流程
+
+1. 将起点加入队列，并标记为已访问。
+2. 从队首取出一个节点。
+3. 遍历它的邻居，将尚未访问的邻居加入队列并标记。
+4. 队列为空时结束。
+
+```text
+queue ← [start]
+visited ← {start}
+
+while queue 不为空:
+    current ← queue.pop(0)
+    for neighbor in current 的邻居:
+        if neighbor 不在 visited:
+            visited.add(neighbor)
+            queue.push(neighbor)
+```
+
+## Python 示例：寻找无权图中的最短路径
+
+在无权图中，BFS 第一次到达某个节点时，使用的边数一定最少，因此可以用它寻找最短路径。
+
+```python
+from collections import deque
+
+
+def shortest_distance(graph, start, target):
+    queue = deque([(start, 0)])
+    visited = {start}
+
+    while queue:
+        node, distance = queue.popleft()
+        if node == target:
+            return distance
+
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+
+    return -1  # 不可达
+
+
+graph = {
+    "A": ["B", "C"],
+    "B": ["A", "D"],
+    "C": ["A", "D"],
+    "D": ["B", "C", "E"],
+    "E": ["D"],
+}
+
+print(shortest_distance(graph, "A", "E"))  # 3
+```
+
+## 复杂度与适用场景
+
+使用邻接表表示图时，BFS 的时间复杂度是 `O(V + E)`，空间复杂度是 `O(V)`，其中 `V` 是节点数，`E` 是边数。
+
+BFS 常用于无权图最短路径、迷宫寻路、社交网络中的关系层级，以及判断节点是否可以从起点到达。需要注意的是，带有不同边权的最短路径问题通常应使用 Dijkstra 等算法。
