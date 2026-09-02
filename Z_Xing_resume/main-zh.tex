@@ -13,6 +13,7 @@
 \usepackage{graphicx}
 \usepackage{array}
 \usepackage{geometry}
+\usepackage{needspace}
 
 % ==================== Page Settings ====================
 \geometry{
@@ -28,6 +29,7 @@
 \fancyfoot{}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
+\setlength{\footskip}{4.1pt}
 
 \raggedbottom
 \raggedright
@@ -42,7 +44,9 @@
 \hypersetup{
     colorlinks=true,
     urlcolor=link,
-    linkcolor=link
+    linkcolor=link,
+    pdftitle={邢梓韬个人简历},
+    pdfauthor={邢梓韬}
 }
 
 % ==================== List Settings ====================
@@ -165,6 +169,49 @@
 \section{实习与项目经历}
 
 \resumeProject
+{上海人工智能研究院}
+{上海}
+{算法实习生}
+{2026年8月 -- 至今}
+\begin{itemize}
+  \item 围绕 AI for Science 方向开展科研复现，梳理研究问题、方法流程、实验配置与评价方式。
+  \item 将复现结果与论文报告或基线结果进行对照，记录实现选择、实验现象与尚待分析的差异。
+\end{itemize}
+
+\resumeProject
+{\href{https://github.com/Romanrose/shangtu-notebook}{上海图书馆开放数据竞赛：时空探索手札}}
+{上海}
+{项目成员}
+{2026年8月}
+\begin{itemize}
+  \item 参与研发面向平板触控场景的 PWA，支持用户在数字纸页上手写人物、地点、经历与作品等内容。
+  \item 参与打通手写转写、受控知识图谱检索、来源证据核验与可追溯旁批等流程。
+\end{itemize}
+
+\resumeProject
+{\href{https://github.com/VincentXing23/Graphrag-for-Network/tree/main}{基于 BGP 网络数字孪生的 GraphRAG MVP}}
+{个人项目}
+{项目开发者}
+{2026年7月 -- 至今}
+\begin{itemize}
+  \item 构建基于 BGP 控制面状态的网络数字孪生 MVP，将 FRR 风格路由状态转换为版本化网络快照，实现确定性的路径查询与变更前后影响分析。
+  \item 实现样例、FRR/containerlab 实验网络与合成规模化三种运行模式；规模场景覆盖 4 个区域、100 台设备与每快照 12,000 条路由记录，并以新鲜度标记处理局部采集失败。
+  \item 集成 Neo4j 图存储、Qdrant/向量检索回退与兼容 OpenAI 或本地模型的 GraphRAG 层，为网络路径与变更结果提供带证据的解释。
+  \item 通过 Python CLI、FastAPI、Docker Compose 与 Cytoscape 工作台提供系统能力，展示网络拓扑、路径变化、采集状态和检索证据。
+\end{itemize}
+
+\Needspace{7\baselineskip}
+\resumeProject
+{\href{https://github.com/easyhang/evo_wiki}{上海市大数据股份有限公司（Evo Wiki）}}
+{上海}
+{人工智能开发实习生}
+{2026年7月 -- 2026年8月}
+\begin{itemize}
+  \item 参与 Evo Wiki 的开发与迭代，围绕 AI 原生 Wiki 与 LightRAG 工作流改进知识组织、检索和交付能力。
+  \item 探索法律语料的知识图谱抽取与检索增强生成流程，关注实体关系建模、检索质量和证据可追溯性。
+\end{itemize}
+
+\resumeProject
 {香港中文大学（深圳）AISE 人工智能+理工科夏令营}
 {广东深圳}
 {营员}
@@ -208,6 +255,7 @@
 
 \vspace{2pt}
 
+\Needspace{12\baselineskip}
 \resumeProject
 {嘉实基金管理有限公司}
 {上海}
@@ -255,6 +303,6 @@
 \skillItem{编程语言}{Python，C/C++，MATLAB，CUDA}
 \skillItem{工具平台}{Git，VS Code，阿里云}
 \skillItem{语言能力}{中文（母语），英文（熟练，雅思 7.0）}
-\skillItem{职业兴趣}{应用数学，机器学习，RAG，运筹学，图算法}
+\skillItem{职业兴趣}{应用数学，机器学习，RAG，运筹学，图算法，AI for Science，Agent 开发}
 \skillItem{业余爱好}{茶文化，咖啡，羽毛球，长跑}
 \end{document}

@@ -1,33 +1,95 @@
-import Link from 'next/link'
+'use client'
 
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/resume', label: 'Resume' },
-  { href: '/#contact', label: 'Contact' },
-]
+import Link from 'next/link'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
+import { normalizeLocale, type Locale } from '@/lib/profile'
+
+const navItems = {
+  en: [
+    { href: '/', label: 'Home' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/resume', label: 'Resume' },
+    { href: '/#contact', label: 'Contact', anchor: true },
+  ],
+  zh: [
+    { href: '/', label: '主页' },
+    { href: '/blog', label: '博客' },
+    { href: '/resume', label: '简历' },
+    { href: '/#contact', label: '联系', anchor: true },
+  ],
+} as const
+
+function LanguageSwitcher({ locale }: { locale: Locale }) {
+  const pathname = usePathname()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  function setLocale(nextLocale: Locale) {
+    const params = new URLSearchParams(searchParams.toString())
+    if (nextLocale === 'zh') {
+      params.set('lang', 'zh')
+    } else {
+      params.delete('lang')
+    }
+    const query = params.toString()
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false })
+  }
+
+  return (
+    <div className="flex shrink-0 rounded-full border border-[#075e63]/20 bg-white/70 p-0.5" aria-label="Language">
+      {(['en', 'zh'] as const).map((item) => (
+        <button
+          key={item}
+          type="button"
+          onClick={() => setLocale(item)}
+          aria-pressed={locale === item}
+          className={`rounded-full px-2.5 py-1.5 text-xs font-semibold transition ${
+            locale === item ? 'bg-[#075e63] text-white' : 'text-[#31413f] hover:text-[#075e63]'
+          }`}
+        >
+          {item === 'en' ? 'EN' : '中文'}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export function Header() {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const supportsLocale = pathname === '/' || pathname === '/resume'
+  const locale = supportsLocale ? normalizeLocale(searchParams.get('lang') ?? undefined) : 'en'
+
+  useEffect(() => {
+    document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en'
+  }, [locale])
+
   return (
     <header className="sticky top-0 z-50 border-b border-black/10 bg-[#fffaf0]/88 backdrop-blur-xl">
-      <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-5 px-5 py-3 sm:px-8">
-        <Link href="/" className="flex items-center gap-3 font-semibold">
+      <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-3 px-5 py-3 sm:px-8">
+        <Link href="/" className="flex shrink-0 items-center gap-3 font-semibold">
           <span className="grid size-10 place-items-center rounded-full bg-[#075e63] text-sm font-bold text-white">
             ZX
           </span>
-          <span className="hidden text-base text-[#102022] sm:inline">Zitao Xing</span>
+          <span className="hidden text-base text-[#102022] lg:inline">{locale === 'zh' ? '邢梓韬' : 'Zitao Xing'}</span>
         </Link>
-        <nav className="flex items-center gap-1 overflow-x-auto text-sm font-medium text-[#31413f]">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-full px-3 py-2 transition hover:bg-[#075e63]/10 hover:text-[#075e63]"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="flex min-w-0 items-center gap-2">
+          <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm font-medium text-[#31413f]">
+            {navItems[locale].map((item) => (
+              <Link
+                key={item.href}
+                href={'anchor' in item && item.anchor && pathname === '/' ? '#contact' : item.href}
+                className={`shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#075e63]/10 hover:text-[#075e63] sm:px-3 ${
+                  'anchor' in item ? 'hidden sm:block' : ''
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          {supportsLocale ? <LanguageSwitcher locale={locale} /> : null}
+        </div>
       </div>
     </header>
   )

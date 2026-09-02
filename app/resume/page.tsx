@@ -1,30 +1,76 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Download, Mail, Phone } from 'lucide-react'
-import { contact, education, experiences, honors, profileSummary, skillGroups } from '@/lib/profile'
+import { Download, ExternalLink, Mail, Phone } from 'lucide-react'
+import { contact, getProfile, normalizeLocale } from '@/lib/profile'
 
-export const metadata: Metadata = {
-  title: 'Resume',
-  description: 'Resume for Zitao Xing, an incoming applied mathematics graduate student at Xiamen University.',
+type ResumePageProps = {
+  searchParams: Promise<{ lang?: string | string[] }>
 }
 
-export default function ResumePage() {
+const copy = {
+  en: {
+    metadataTitle: 'Resume',
+    metadataDescription: 'Resume for Zitao Xing, an incoming applied mathematics graduate student at Xiamen University.',
+    eyebrow: 'Resume',
+    download: 'Download English PDF',
+    alternateDownload: '下载中文 PDF',
+    education: 'Education',
+    experience: 'Internship, Research & Projects',
+    honors: 'Honors & Awards',
+    skills: 'Skills & Interests',
+  },
+  zh: {
+    metadataTitle: '简历',
+    metadataDescription: '邢梓韬的中文简历，研究方向包括应用数学、AI for Science、Agent 开发与 GraphRAG。',
+    eyebrow: '个人简历',
+    download: '下载中文 PDF',
+    alternateDownload: 'Download English PDF',
+    education: '教育经历',
+    experience: '实习、科研与项目经历',
+    honors: '竞赛与荣誉',
+    skills: '技能与兴趣',
+  },
+} as const
+
+export async function generateMetadata({ searchParams }: ResumePageProps): Promise<Metadata> {
+  const locale = normalizeLocale((await searchParams).lang)
+  return {
+    title: copy[locale].metadataTitle,
+    description: copy[locale].metadataDescription,
+  }
+}
+
+export default async function ResumePage({ searchParams }: ResumePageProps) {
+  const locale = normalizeLocale((await searchParams).lang)
+  const alternateLocale = locale === 'en' ? 'zh' : 'en'
+  const t = copy[locale]
+  const { education, experiences, honors, profileSummary, skillGroups } = getProfile(locale)
+
   return (
     <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
       <section className="border-b border-black/10 pb-10">
-        <p className="text-sm font-semibold uppercase text-[#075e63]">Resume</p>
+        <p className="text-sm font-semibold uppercase text-[#075e63]">{t.eyebrow}</p>
         <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h1 className="text-5xl font-semibold text-[#102022]">Zitao Xing</h1>
+            <h1 className="text-5xl font-semibold text-[#102022]">{locale === 'zh' ? '邢梓韬' : 'Zitao Xing'}</h1>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-[#31413f]">{profileSummary}</p>
           </div>
-          <Link
-            href={contact.resumeHref}
-            className="inline-flex min-h-12 w-fit items-center gap-2 rounded-full bg-[#075e63] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#064d51]"
-          >
-            <Download size={17} aria-hidden="true" />
-            Download PDF
-          </Link>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href={contact.resumeHref[locale]}
+              className="inline-flex min-h-12 w-fit items-center gap-2 rounded-full bg-[#075e63] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#064d51]"
+            >
+              <Download size={17} aria-hidden="true" />
+              {t.download}
+            </Link>
+            <Link
+              href={contact.resumeHref[alternateLocale]}
+              className="inline-flex min-h-12 w-fit items-center gap-2 rounded-full border border-[#075e63]/25 bg-white/70 px-5 py-3 text-sm font-semibold text-[#075e63] transition hover:border-[#075e63]/50"
+            >
+              <Download size={17} aria-hidden="true" />
+              {t.alternateDownload}
+            </Link>
+          </div>
         </div>
         <div className="mt-8 flex flex-wrap gap-3 text-sm text-[#31413f]">
           <Link
@@ -45,7 +91,7 @@ export default function ResumePage() {
       </section>
 
       <section className="py-10">
-        <h2 className="text-2xl font-semibold text-[#102022]">Education</h2>
+        <h2 className="text-2xl font-semibold text-[#102022]">{t.education}</h2>
         <div className="mt-5 grid gap-4">
           {education.map((item) => (
             <article key={`${item.institution}-${item.period}`} className="rounded-lg border border-black/10 bg-white/78 p-5">
@@ -57,26 +103,41 @@ export default function ResumePage() {
                 <p className="text-sm font-semibold text-[#075e63]">{item.period}</p>
               </div>
               <p className="mt-2 text-sm text-[#66736f]">{item.location}</p>
-              <p className="mt-3 leading-7 text-[#31413f]">{item.detail}</p>
+              {item.detail ? <p className="mt-3 leading-7 text-[#31413f]">{item.detail}</p> : null}
             </article>
           ))}
         </div>
       </section>
 
       <section className="border-t border-black/10 py-10">
-        <h2 className="text-2xl font-semibold text-[#102022]">Internship & Experience</h2>
+        <h2 className="text-2xl font-semibold text-[#102022]">{t.experience}</h2>
         <div className="mt-5 grid gap-4">
           {experiences.map((item) => (
-            <article key={`${item.title}-${item.period}`} className="rounded-lg border border-black/10 bg-white/78 p-5">
+            <article key={item.id} className="rounded-lg border border-black/10 bg-white/78 p-5">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <h3 className="text-xl font-semibold">{item.title}</h3>
+                  <h3 className="text-xl font-semibold">
+                    {item.href ? (
+                      <Link
+                        href={item.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 hover:text-[#075e63] hover:underline"
+                      >
+                        {item.title}
+                        <ExternalLink size={16} aria-hidden="true" />
+                      </Link>
+                    ) : (
+                      item.title
+                    )}
+                  </h3>
                   <p className="mt-1 text-[#31413f]">
                     {item.role} · {item.organization}
                   </p>
                 </div>
                 <p className="text-sm font-semibold text-[#075e63]">{item.period}</p>
               </div>
+              <p className="mt-2 text-sm text-[#66736f]">{item.location}</p>
               <ul className="mt-4 space-y-3 text-[#31413f]">
                 {item.bullets.map((bullet) => (
                   <li key={bullet} className="flex gap-3 leading-7">
@@ -92,7 +153,7 @@ export default function ResumePage() {
 
       <section className="grid gap-8 border-t border-black/10 py-10 lg:grid-cols-2">
         <div>
-          <h2 className="text-2xl font-semibold text-[#102022]">Honors & Awards</h2>
+          <h2 className="text-2xl font-semibold text-[#102022]">{t.honors}</h2>
           <ul className="mt-5 space-y-3 leading-7 text-[#31413f]">
             {honors.map((honor) => (
               <li key={honor}>{honor}</li>
@@ -100,12 +161,12 @@ export default function ResumePage() {
           </ul>
         </div>
         <div>
-          <h2 className="text-2xl font-semibold text-[#102022]">Skills & Interests</h2>
+          <h2 className="text-2xl font-semibold text-[#102022]">{t.skills}</h2>
           <div className="mt-5 grid gap-4">
             {skillGroups.map((group) => (
               <div key={group.name}>
                 <p className="font-semibold text-[#075e63]">{group.name}</p>
-                <p className="mt-1 leading-7 text-[#31413f]">{group.items.join(', ')}</p>
+                <p className="mt-1 leading-7 text-[#31413f]">{group.items.join(locale === 'zh' ? '、' : ', ')}</p>
               </div>
             ))}
           </div>

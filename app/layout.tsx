@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
+import { AmbientBackground } from '@/components/AmbientBackground'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import './globals.css'
@@ -26,9 +28,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className="min-h-screen antialiased">
-        <Header />
+        <AmbientBackground />
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
         <main>{children}</main>
-        <Footer />
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </body>
     </html>
   )

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -14,11 +15,105 @@ import {
   Trophy,
 } from 'lucide-react'
 import { getAllPosts } from '@/lib/blog'
-import { contact, education, experiences, honors, profileSummary, skillGroups } from '@/lib/profile'
+import { contact, featuredExperienceId, getProfile, normalizeLocale, type Locale } from '@/lib/profile'
 
-export default function HomePage() {
+type HomePageProps = {
+  searchParams: Promise<{ lang?: string | string[] }>
+}
+
+const copy = {
+  en: {
+    metadataTitle: 'Zitao Xing',
+    metadataDescription:
+      'Zitao Xing is an incoming applied mathematics graduate student working on AI for Science, agent development, numerical methods, and graph-enhanced AI systems.',
+    focusPill: 'Applied Mathematics · AI for Science · Agent Development',
+    viewResume: 'View Resume',
+    downloadResume: 'Download PDF',
+    email: 'Email',
+    stats: [
+      ['Current focus', 'AI for Science reproduction, agent development, and GraphRAG'],
+      ['Next step', 'Incoming M.S. in Operations Research at XMU · Sep. 2026'],
+      ['Research toolkit', 'Python, Neo4j, Qdrant, embeddings, reranking, CUDA'],
+    ],
+    educationEyebrow: 'Education',
+    educationHeading: 'Mathematics training in Xiamen and San Diego, with graduate study ahead.',
+    projectEyebrow: 'Project Spotlight',
+    projectHeading: 'Exploring GraphRAG support for functional analysis learning.',
+    projectCards: [
+      ['Course graph', '95 course objects connected by 216 knowledge-graph relationships.'],
+      ['Retrieval pipeline', 'Vector recall, reranking, graph expansion, and evidence-chain display.'],
+      ['Technical stack', 'Neo4j, Qdrant, BGE embeddings and reranker, Flask.'],
+    ],
+    experienceEyebrow: 'Experience',
+    experienceHeading: 'Research, engineering projects, academic programs, and applied work.',
+    fullResume: 'Full resume',
+    skillsEyebrow: 'Skills & Interests',
+    skillsHeading: 'Tools for mathematical research, machine learning, and rigorous problem solving.',
+    honors: 'Honors & Awards',
+    blogEyebrow: 'Blog',
+    blogHeading: 'Notes on mathematics, learning, and systems.',
+    readBlog: 'Read blog',
+    contactEyebrow: 'Contact',
+    contactHeading: 'Open to academic and technical conversations.',
+  },
+  zh: {
+    metadataTitle: '邢梓韬',
+    metadataDescription: '邢梓韬的个人主页，关注 AI for Science、Agent 开发、数值方法与图增强人工智能系统。',
+    focusPill: '应用数学 · AI for Science · Agent 开发',
+    viewResume: '查看简历',
+    downloadResume: '下载 PDF',
+    email: '发送邮件',
+    stats: [
+      ['当前方向', 'AI for Science 科研复现、Agent 开发与 GraphRAG'],
+      ['下一阶段', '2026年9月进入厦门大学攻读运筹学方向硕士'],
+      ['研究工具', 'Python、Neo4j、Qdrant、向量检索、重排、CUDA'],
+    ],
+    educationEyebrow: '教育经历',
+    educationHeading: '在厦门与圣地亚哥接受数学训练，即将进入研究生阶段。',
+    projectEyebrow: '项目聚焦',
+    projectHeading: '探索 GraphRAG 在泛函分析课程学习中的应用。',
+    projectCards: [
+      ['课程图谱', '95 个课程对象，通过 216 条知识图谱关系连接。'],
+      ['检索流程', '向量召回、结果重排、图谱扩展与证据链展示。'],
+      ['技术栈', 'Neo4j、Qdrant、BGE 向量模型与重排模型、Flask。'],
+    ],
+    experienceEyebrow: '经历',
+    experienceHeading: '科研、工程项目、学术活动与行业实践。',
+    fullResume: '完整简历',
+    skillsEyebrow: '技能与兴趣',
+    skillsHeading: '面向数学研究、机器学习与严谨问题求解的工具与能力。',
+    honors: '竞赛与荣誉',
+    blogEyebrow: '博客',
+    blogHeading: '关于数学、学习与系统的笔记。',
+    readBlog: '查看博客',
+    contactEyebrow: '联系我',
+    contactHeading: '欢迎交流学术与技术问题。',
+  },
+} as const
+
+function getLocaleHref(locale: Locale) {
+  return contact.resumeHref[locale]
+}
+
+export async function generateMetadata({ searchParams }: HomePageProps): Promise<Metadata> {
+  const locale = normalizeLocale((await searchParams).lang)
+  return {
+    title: copy[locale].metadataTitle,
+    description: copy[locale].metadataDescription,
+  }
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const locale = normalizeLocale((await searchParams).lang)
+  const t = copy[locale]
+  const { education, experiences, honors, profileSummary, skillGroups } = getProfile(locale)
   const latestPosts = getAllPosts().slice(0, 2)
-  const project = experiences[1]
+  const project = experiences.find((item) => item.id === featuredExperienceId)
+  const otherExperiences = experiences.filter((item) => item.id !== featuredExperienceId)
+
+  if (!project) {
+    throw new Error(`Featured experience not found: ${featuredExperienceId}`)
+  }
 
   return (
     <>
@@ -36,41 +131,39 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#075e63]/25 bg-white/58 px-4 py-2 text-sm font-semibold text-[#075e63]">
               <Sigma size={17} aria-hidden="true" />
-              Applied Mathematics · Machine Learning · GraphRAG
+              {t.focusPill}
             </p>
             <h1 className="max-w-3xl text-5xl font-semibold leading-[1.04] text-[#102022] sm:text-6xl">
-              Zitao Xing
+              {locale === 'zh' ? '邢梓韬' : 'Zitao Xing'}
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#31413f] sm:text-xl">
-              {profileSummary}
-            </p>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#31413f] sm:text-xl">{profileSummary}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/resume"
                 className="inline-flex min-h-12 items-center gap-2 rounded-full bg-[#075e63] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#075e63]/18 transition hover:bg-[#064d51]"
               >
-                View Resume
+                {t.viewResume}
                 <ArrowRight size={17} aria-hidden="true" />
               </Link>
               <Link
-                href={contact.resumeHref}
+                href={getLocaleHref(locale)}
                 className="inline-flex min-h-12 items-center gap-2 rounded-full border border-[#102022]/18 bg-white/70 px-5 py-3 text-sm font-semibold text-[#102022] transition hover:border-[#075e63]/45 hover:text-[#075e63]"
               >
                 <Download size={17} aria-hidden="true" />
-                Download PDF
+                {t.downloadResume}
               </Link>
               <Link
                 href={`mailto:${contact.email}`}
                 className="inline-flex min-h-12 items-center gap-2 rounded-full border border-[#102022]/18 bg-white/70 px-5 py-3 text-sm font-semibold text-[#102022] transition hover:border-[#075e63]/45 hover:text-[#075e63]"
               >
                 <Mail size={17} aria-hidden="true" />
-                Email
+                {t.email}
               </Link>
             </div>
             <div className="mt-9 grid max-w-2xl gap-3 text-sm text-[#31413f] sm:grid-cols-2">
               <span className="inline-flex items-center gap-2">
                 <MapPin size={16} className="text-[#075e63]" aria-hidden="true" />
-                Xiamen University, China
+                {contact.location[locale]}
               </span>
               <span className="inline-flex items-center gap-2">
                 <Phone size={16} className="text-[#075e63]" aria-hidden="true" />
@@ -83,11 +176,7 @@ export default function HomePage() {
 
       <section className="border-y border-black/10 bg-[#102022] text-white">
         <div className="mx-auto grid max-w-7xl gap-4 px-5 py-7 sm:grid-cols-3 sm:px-8">
-          {[
-            ['Current focus', 'GraphRAG for functional analysis and numerical PDE methods'],
-            ['Next step', 'Incoming M.S. in Operations Research at XMU · Sep. 2026'],
-            ['Research toolkit', 'Neo4j, Qdrant, embeddings, reranking, CUDA'],
-          ].map(([label, value]) => (
+          {t.stats.map(([label, value]) => (
             <div key={label} className="min-h-24 border-l border-white/18 pl-5">
               <p className="text-xs font-semibold uppercase text-[#f0b54f]">{label}</p>
               <p className="mt-2 text-lg font-semibold leading-7">{value}</p>
@@ -99,10 +188,8 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
-            <p className="text-sm font-semibold uppercase text-[#bf5142]">Education</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Mathematics training in Xiamen and San Diego, with graduate study ahead.
-            </h2>
+            <p className="text-sm font-semibold uppercase text-[#bf5142]">{t.educationEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">{t.educationHeading}</h2>
           </div>
           <div className="grid gap-4">
             {education.map((item) => (
@@ -118,7 +205,7 @@ export default function HomePage() {
                   <p className="text-sm font-semibold text-[#075e63]">{item.period}</p>
                 </div>
                 <p className="mt-3 text-sm text-[#66736f]">{item.location}</p>
-                <p className="mt-3 leading-7 text-[#31413f]">{item.detail}</p>
+                {item.detail ? <p className="mt-3 leading-7 text-[#31413f]">{item.detail}</p> : null}
               </article>
             ))}
           </div>
@@ -128,10 +215,8 @@ export default function HomePage() {
       <section className="bg-[#edf7f5]">
         <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase text-[#075e63]">Project Spotlight</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Exploring GraphRAG support for functional analysis learning.
-            </h2>
+            <p className="text-sm font-semibold uppercase text-[#075e63]">{t.projectEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">{t.projectHeading}</h2>
           </div>
           <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
             <article className="rounded-lg border border-[#075e63]/18 bg-white p-6 shadow-sm">
@@ -156,11 +241,7 @@ export default function HomePage() {
               </ul>
             </article>
             <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-              {[
-                ['Course graph', '95 course objects connected by 216 knowledge-graph relationships.'],
-                ['Retrieval pipeline', 'Vector recall, reranking, graph expansion, and evidence-chain display.'],
-                ['Technical stack', 'Neo4j, Qdrant, BGE embeddings and reranker, Flask.'],
-              ].map(([label, detail]) => (
+              {t.projectCards.map(([label, detail]) => (
                 <div key={label} className="rounded-lg border border-black/10 bg-[#fffaf0] p-5">
                   <p className="font-semibold text-[#102022]">{label}</p>
                   <p className="mt-2 text-sm leading-6 text-[#66736f]">{detail}</p>
@@ -174,24 +255,30 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase text-[#bf5142]">Experience</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Academic programs, research projects, and applied work.
-            </h2>
+            <p className="text-sm font-semibold uppercase text-[#bf5142]">{t.experienceEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">{t.experienceHeading}</h2>
           </div>
           <Link
             href="/resume"
             className="inline-flex min-h-11 w-fit items-center gap-2 rounded-full border border-[#102022]/18 px-4 py-2 text-sm font-semibold text-[#102022] transition hover:border-[#075e63]/45 hover:text-[#075e63]"
           >
-            Full resume
+            {t.fullResume}
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          {experiences.slice(1).map((item) => (
-            <article key={`${item.title}-${item.period}`} className="rounded-lg border border-black/10 bg-white/72 p-5">
+          {otherExperiences.map((item) => (
+            <article key={item.id} className="rounded-lg border border-black/10 bg-white/72 p-5">
               <p className="text-sm font-semibold text-[#075e63]">{item.period}</p>
-              <h3 className="mt-2 text-xl font-semibold text-[#102022]">{item.title}</h3>
+              <h3 className="mt-2 text-xl font-semibold text-[#102022]">
+                {item.href ? (
+                  <Link href={item.href} target="_blank" rel="noreferrer" className="hover:text-[#075e63] hover:underline">
+                    {item.title}
+                  </Link>
+                ) : (
+                  item.title
+                )}
+              </h3>
               <p className="mt-1 text-sm text-[#66736f]">
                 {item.organization} · {item.location}
               </p>
@@ -204,14 +291,12 @@ export default function HomePage() {
       <section className="bg-[#fffaf0]">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="text-sm font-semibold uppercase text-[#075e63]">Skills & Interests</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Tools for mathematical research, machine learning, and rigorous problem solving.
-            </h2>
+            <p className="text-sm font-semibold uppercase text-[#075e63]">{t.skillsEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">{t.skillsHeading}</h2>
             <div className="mt-8 rounded-lg border border-[#c8841d]/35 bg-[#fff3dc] p-5">
               <div className="flex items-center gap-3">
                 <Trophy className="text-[#c8841d]" size={22} aria-hidden="true" />
-                <p className="font-semibold text-[#102022]">Honors & Awards</p>
+                <p className="font-semibold text-[#102022]">{t.honors}</p>
               </div>
               <ul className="mt-4 space-y-3 text-sm leading-6 text-[#31413f]">
                 {honors.map((honor) => (
@@ -221,12 +306,12 @@ export default function HomePage() {
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            {skillGroups.map((group) => (
+            {skillGroups.map((group, index) => (
               <article key={group.name} className="rounded-lg border border-black/10 bg-white p-5">
                 <div className="flex items-center gap-3">
-                  {group.name.includes('Programming') ? (
+                  {index === 0 ? (
                     <Code2 size={20} className="text-[#075e63]" aria-hidden="true" />
-                  ) : group.name.includes('Interests') ? (
+                  ) : index >= 2 ? (
                     <BookOpen size={20} className="text-[#075e63]" aria-hidden="true" />
                   ) : (
                     <GraduationCap size={20} className="text-[#075e63]" aria-hidden="true" />
@@ -252,16 +337,14 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase text-[#bf5142]">Blog</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">
-              Notes on mathematics, learning, and systems.
-            </h2>
+            <p className="text-sm font-semibold uppercase text-[#bf5142]">{t.blogEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">{t.blogHeading}</h2>
           </div>
           <Link
             href="/blog"
             className="inline-flex min-h-11 w-fit items-center gap-2 rounded-full border border-[#102022]/18 px-4 py-2 text-sm font-semibold transition hover:border-[#075e63]/45 hover:text-[#075e63]"
           >
-            Read blog
+            {t.readBlog}
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
@@ -283,8 +366,8 @@ export default function HomePage() {
       <section id="contact" className="bg-[#102022] text-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="text-sm font-semibold uppercase text-[#f0b54f]">Contact</p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Open to academic conversations.</h2>
+            <p className="text-sm font-semibold uppercase text-[#f0b54f]">{t.contactEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">{t.contactHeading}</h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <Link

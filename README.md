@@ -33,11 +33,13 @@ Public routes:
 Public assets:
 
 - `/static/files/zitao-xing-resume.pdf`
+- `/static/files/zitao-xing-resume-zh.pdf`
 - `/static/images/math-ai-hero.png`
 
 ## Content
 
-- Resume PDF: `public/static/files/zitao-xing-resume.pdf`
+- English resume PDF: `public/static/files/zitao-xing-resume.pdf`
+- Chinese resume PDF: `public/static/files/zitao-xing-resume-zh.pdf`
 - English resume source: `Z_Xing_resume/main.tex`
 - Original Chinese resume source: `Z_Xing_resume/main-zh.tex`
 - Hero image: `public/static/images/math-ai-hero.png`
@@ -48,4 +50,11 @@ Compile the English resume with:
 ```bash
 cd Z_Xing_resume
 latexmk -xelatex main.tex
+```
+
+Compile the Chinese resume with:
+
+```bash
+cd Z_Xing_resume
+latexmk -xelatex main-zh.tex
 ```
