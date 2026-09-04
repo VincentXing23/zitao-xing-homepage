@@ -184,7 +184,7 @@ const profiles: Record<Locale, ProfileContent> = {
     skillGroups: [
       {
         name: 'Programming & Tools',
-        items: ['Python', 'C/C++', 'MATLAB', 'CUDA', 'Git', 'VS Code', 'Alibaba Cloud'],
+        items: ['Python', 'C/C++', 'MATLAB', 'CUDA', 'Git', 'VS Code', 'Codex', 'WorkBuddy', 'Trae', 'Alibaba Cloud'],
       },
       {
         name: 'Languages',
@@ -344,7 +344,7 @@ const profiles: Record<Locale, ProfileContent> = {
     skillGroups: [
       {
         name: '编程与工具',
-        items: ['Python', 'C/C++', 'MATLAB', 'CUDA', 'Git', 'VS Code', '阿里云'],
+        items: ['Python', 'C/C++', 'MATLAB', 'CUDA', 'Git', 'VS Code', 'Codex', 'WorkBuddy', 'Trae', '阿里云'],
       },
       {
         name: '语言能力',
