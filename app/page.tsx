@@ -44,8 +44,10 @@ const copy = {
       ['Retrieval pipeline', 'Vector recall, reranking, graph expansion, and evidence-chain display.'],
       ['Technical stack', 'Neo4j, Qdrant, BGE embeddings and reranker, Flask.'],
     ],
-    experienceEyebrow: 'Experience',
-    experienceHeading: 'Research, engineering projects, academic programs, and applied work.',
+    internshipEyebrow: 'Internships',
+    internshipHeading: 'Applied AI work across research reproduction, knowledge systems, and industry practice.',
+    projectsEyebrow: 'Projects & Research',
+    projectsHeading: 'Research projects, engineering prototypes, and academic programs.',
     fullResume: 'Full resume',
     skillsEyebrow: 'Skills & Interests',
     skillsHeading: 'Tools for mathematical research, machine learning, and rigorous problem solving.',
@@ -77,8 +79,10 @@ const copy = {
       ['检索流程', '向量召回、结果重排、图谱扩展与证据链展示。'],
       ['技术栈', 'Neo4j、Qdrant、BGE 向量模型与重排模型、Flask。'],
     ],
-    experienceEyebrow: '经历',
-    experienceHeading: '科研、工程项目、学术活动与行业实践。',
+    internshipEyebrow: '实习经历',
+    internshipHeading: '围绕科研复现、知识系统与行业实践开展应用型人工智能工作。',
+    projectsEyebrow: '科研与项目经历',
+    projectsHeading: '科研训练、工程原型与学术活动。',
     fullResume: '完整简历',
     skillsEyebrow: '技能与兴趣',
     skillsHeading: '面向数学研究、机器学习与严谨问题求解的工具与能力。',
@@ -109,7 +113,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const { education, experiences, honors, profileSummary, skillGroups } = getProfile(locale)
   const latestPosts = getAllPosts().slice(0, 2)
   const project = experiences.find((item) => item.id === featuredExperienceId)
-  const otherExperiences = experiences.filter((item) => item.id !== featuredExperienceId)
+  const internships = experiences.filter((item) => item.kind === 'internship')
+  const otherProjects = experiences.filter(
+    (item) => item.kind === 'project' && item.id !== featuredExperienceId,
+  )
 
   if (!project) {
     throw new Error(`Featured experience not found: ${featuredExperienceId}`)
@@ -255,8 +262,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase text-[#bf5142]">{t.experienceEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">{t.experienceHeading}</h2>
+            <p className="text-sm font-semibold uppercase text-[#bf5142]">{t.internshipEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">{t.internshipHeading}</h2>
           </div>
           <Link
             href="/resume"
@@ -267,7 +274,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           </Link>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          {otherExperiences.map((item) => (
+          {internships.map((item) => (
             <article key={item.id} className="rounded-lg border border-black/10 bg-white/72 p-5">
               <p className="text-sm font-semibold text-[#075e63]">{item.period}</p>
               <h3 className="mt-2 text-xl font-semibold text-[#102022]">
@@ -285,6 +292,40 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <p className="mt-4 leading-7 text-[#31413f]">{item.bullets[0]}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="bg-[#edf7f5]/65">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
+          <div className="mb-10 max-w-3xl">
+            <p className="text-sm font-semibold uppercase text-[#075e63]">{t.projectsEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#102022] sm:text-4xl">{t.projectsHeading}</h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            {otherProjects.map((item) => (
+              <article key={item.id} className="rounded-lg border border-black/10 bg-white/78 p-5">
+                <p className="text-sm font-semibold text-[#075e63]">{item.period}</p>
+                <h3 className="mt-2 text-xl font-semibold text-[#102022]">
+                  {item.href ? (
+                    <Link
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-[#075e63] hover:underline"
+                    >
+                      {item.title}
+                    </Link>
+                  ) : (
+                    item.title
+                  )}
+                </h3>
+                <p className="mt-1 text-sm text-[#66736f]">
+                  {item.organization} · {item.location}
+                </p>
+                <p className="mt-4 leading-7 text-[#31413f]">{item.bullets[0]}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 

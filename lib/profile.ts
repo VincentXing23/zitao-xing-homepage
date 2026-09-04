@@ -10,6 +10,7 @@ export type EducationItem = {
 
 export type ExperienceItem = {
   id: string
+  kind: 'internship' | 'project'
   title: string
   organization: string
   location: string
@@ -76,6 +77,7 @@ const profiles: Record<Locale, ProfileContent> = {
     experiences: [
       {
         id: 'shanghai-ai-research-institute',
+        kind: 'internship',
         title: 'AI for Science Research Reproduction',
         organization: 'Shanghai Artificial Intelligence Research Institute',
         location: 'Shanghai, China',
@@ -88,6 +90,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'shangtu-notebook',
+        kind: 'project',
         title: 'Shanghai Library Open Data Competition — Spatiotemporal Exploration Notebook',
         organization: 'Shanghai Library Open Data Competition',
         location: 'Shanghai, China',
@@ -101,6 +104,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'shanghai-big-data',
+        kind: 'internship',
         title: 'Evo Wiki Development and Legal Knowledge Retrieval Exploration',
         organization: 'Shanghai Big Data Co., Ltd.',
         location: 'Shanghai, China',
@@ -114,6 +118,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'aise-summer-camp',
+        kind: 'project',
         title: 'AISE Summer Camp on Artificial Intelligence + Science and Engineering',
         organization: 'The Chinese University of Hong Kong, Shenzhen',
         location: 'Shenzhen, China',
@@ -128,6 +133,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'functional-analysis-graphrag',
+        kind: 'project',
         title: 'Functional Analysis Course GraphRAG: Construction and Feasibility Verification',
         organization: 'National-Level Undergraduate Research Training Project',
         location: 'Xiamen, China',
@@ -143,6 +149,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'pde-numerical-methods',
+        kind: 'project',
         title: 'Novel Numerical Methods for Partial Differential Equations',
         organization: "Provincial College Students' Innovation and Entrepreneurship Training Program",
         location: 'Xiamen, China',
@@ -156,6 +163,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'harvest-fund',
+        kind: 'internship',
         title: 'Internship, Shanghai Regional Office',
         organization: 'Harvest Fund Management Co., Ltd.',
         location: 'Shanghai, China',
@@ -229,6 +237,7 @@ const profiles: Record<Locale, ProfileContent> = {
     experiences: [
       {
         id: 'shanghai-ai-research-institute',
+        kind: 'internship',
         title: 'AI for Science 科研复现',
         organization: '上海人工智能研究院',
         location: '上海',
@@ -241,6 +250,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'shangtu-notebook',
+        kind: 'project',
         title: '上海图书馆开放数据竞赛——时空探索手札',
         organization: '上海图书馆开放数据竞赛',
         location: '上海',
@@ -254,6 +264,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'shanghai-big-data',
+        kind: 'internship',
         title: 'Evo Wiki 开发与法律知识检索探索',
         organization: '上海市大数据股份有限公司',
         location: '上海',
@@ -267,6 +278,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'aise-summer-camp',
+        kind: 'project',
         title: 'AISE 人工智能+理工科夏令营',
         organization: '香港中文大学（深圳）',
         location: '广东深圳',
@@ -281,6 +293,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'functional-analysis-graphrag',
+        kind: 'project',
         title: '泛函分析课程 GraphRAG：建设与可行性验证',
         organization: '国家级大学生科研训练项目',
         location: '福建厦门',
@@ -296,6 +309,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'pde-numerical-methods',
+        kind: 'project',
         title: '偏微分方程的新型数值方法研究',
         organization: '省级大学生创新创业训练项目',
         location: '福建厦门',
@@ -309,6 +323,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
       {
         id: 'harvest-fund',
+        kind: 'internship',
         title: '上海区域实习',
         organization: '嘉实基金管理有限公司',
         location: '上海',

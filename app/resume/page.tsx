@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Download, ExternalLink, Mail, Phone } from 'lucide-react'
-import { contact, getProfile, normalizeLocale } from '@/lib/profile'
+import { contact, getProfile, normalizeLocale, type ExperienceItem } from '@/lib/profile'
 
 type ResumePageProps = {
   searchParams: Promise<{ lang?: string | string[] }>
@@ -15,7 +15,8 @@ const copy = {
     download: 'Download English PDF',
     alternateDownload: '下载中文 PDF',
     education: 'Education',
-    experience: 'Internship, Research & Projects',
+    internships: 'Internship Experience',
+    projects: 'Research & Projects',
     honors: 'Honors & Awards',
     skills: 'Skills & Interests',
   },
@@ -26,11 +27,58 @@ const copy = {
     download: '下载中文 PDF',
     alternateDownload: 'Download English PDF',
     education: '教育经历',
-    experience: '实习、科研与项目经历',
+    internships: '实习经历',
+    projects: '科研与项目经历',
     honors: '竞赛与荣誉',
     skills: '技能与兴趣',
   },
 } as const
+
+function ExperienceSection({ title, items }: { title: string; items: ExperienceItem[] }) {
+  return (
+    <section className="border-t border-black/10 py-10">
+      <h2 className="text-2xl font-semibold text-[#102022]">{title}</h2>
+      <div className="mt-5 grid gap-4">
+        {items.map((item) => (
+          <article key={item.id} className="rounded-lg border border-black/10 bg-white/78 p-5">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h3 className="text-xl font-semibold">
+                  {item.href ? (
+                    <Link
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 hover:text-[#075e63] hover:underline"
+                    >
+                      {item.title}
+                      <ExternalLink size={16} aria-hidden="true" />
+                    </Link>
+                  ) : (
+                    item.title
+                  )}
+                </h3>
+                <p className="mt-1 text-[#31413f]">
+                  {item.role} · {item.organization}
+                </p>
+              </div>
+              <p className="text-sm font-semibold text-[#075e63]">{item.period}</p>
+            </div>
+            <p className="mt-2 text-sm text-[#66736f]">{item.location}</p>
+            <ul className="mt-4 space-y-3 text-[#31413f]">
+              {item.bullets.map((bullet) => (
+                <li key={bullet} className="flex gap-3 leading-7">
+                  <span className="mt-3 size-2 shrink-0 rounded-full bg-[#c8841d]" />
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
 
 export async function generateMetadata({ searchParams }: ResumePageProps): Promise<Metadata> {
   const locale = normalizeLocale((await searchParams).lang)
@@ -45,6 +93,8 @@ export default async function ResumePage({ searchParams }: ResumePageProps) {
   const alternateLocale = locale === 'en' ? 'zh' : 'en'
   const t = copy[locale]
   const { education, experiences, honors, profileSummary, skillGroups } = getProfile(locale)
+  const internships = experiences.filter((item) => item.kind === 'internship')
+  const projects = experiences.filter((item) => item.kind === 'project')
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
@@ -109,47 +159,8 @@ export default async function ResumePage({ searchParams }: ResumePageProps) {
         </div>
       </section>
 
-      <section className="border-t border-black/10 py-10">
-        <h2 className="text-2xl font-semibold text-[#102022]">{t.experience}</h2>
-        <div className="mt-5 grid gap-4">
-          {experiences.map((item) => (
-            <article key={item.id} className="rounded-lg border border-black/10 bg-white/78 p-5">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <h3 className="text-xl font-semibold">
-                    {item.href ? (
-                      <Link
-                        href={item.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 hover:text-[#075e63] hover:underline"
-                      >
-                        {item.title}
-                        <ExternalLink size={16} aria-hidden="true" />
-                      </Link>
-                    ) : (
-                      item.title
-                    )}
-                  </h3>
-                  <p className="mt-1 text-[#31413f]">
-                    {item.role} · {item.organization}
-                  </p>
-                </div>
-                <p className="text-sm font-semibold text-[#075e63]">{item.period}</p>
-              </div>
-              <p className="mt-2 text-sm text-[#66736f]">{item.location}</p>
-              <ul className="mt-4 space-y-3 text-[#31413f]">
-                {item.bullets.map((bullet) => (
-                  <li key={bullet} className="flex gap-3 leading-7">
-                    <span className="mt-3 size-2 shrink-0 rounded-full bg-[#c8841d]" />
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
-      </section>
+      <ExperienceSection title={t.internships} items={internships} />
+      <ExperienceSection title={t.projects} items={projects} />
 
       <section className="grid gap-8 border-t border-black/10 py-10 lg:grid-cols-2">
         <div>
