@@ -6,7 +6,7 @@ import { Header } from '@/components/Header'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://zitao-xing-homepage.vercel.app'),
+  metadataBase: new URL('https://www.vincentxingzitao.top'),
   title: {
     default: 'Zitao Xing',
     template: '%s | Zitao Xing',
