@@ -203,7 +203,7 @@ p { text-wrap: pretty; }
 }
 .site-header nav, .focus-pill, .signal-strip p:first-child,
 main p.uppercase {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: var(--font-mono);
   letter-spacing: 0.055em;
 }
 main p.uppercase::before { content: "// "; opacity: 0.65; }
@@ -304,7 +304,7 @@ main a.border:hover {
   pointer-events: none;
   color: var(--foreground);
   background: radial-gradient(ellipse at 50% 45%, #142339 0, #070b14 65%);
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: var(--font-mono);
   animation: entrance-depart 650ms cubic-bezier(.65, 0, .25, 1) 1450ms both;
 }
 .entrance-grid {
@@ -547,3 +547,49 @@ body > header.site-header { position: sticky; background: #070d17e8; }
   .portfolio-section > .page-shell > .section-heading { animation: section-reveal linear both; animation-timeline: view(block); animation-range: entry 0% cover 18%; }
 }
 @media (prefers-reduced-motion: reduce) { .portfolio-section > .page-shell > .section-heading { animation: none; } }
+
+
+/* Chinese type: an editorial serif for headings, a quiet sans for reading.
+   Latin keeps Space Grotesk; glyph fallback also works in bilingual articles. */
+@font-face {
+  font-family: 'Noto Sans SC';
+  src: url('/fonts/noto-sans-sc-regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans SC';
+  src: url('/fonts/noto-sans-sc-semibold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Serif SC';
+  src: url('/fonts/noto-serif-sc-semibold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --font-body: 'Space Grotesk', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-display: 'Space Grotesk', 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', 'Noto Sans SC', monospace;
+}
+body { font-family: var(--font-body); }
+h1, h2, h3 { font-family: var(--font-display); }
+.portfolio-home .display-name-zh {
+  font-weight: 600;
+  letter-spacing: .06em;
+  line-height: 1.2;
+}
+.section-heading h2, .contact-layout h2 { letter-spacing: .015em; }
+.article-body { letter-spacing: .015em; }
+@media (max-width: 520px) {
+  .portfolio-home .display-name-zh { font-size: clamp(62px, 17vw, 74px); letter-spacing: .045em; }
+}
+
+/* Compact technical labels retain the sans-serif face. */
+.toolbox-group h3, .pipeline h4 { font-family: var(--font-body); }
+.spotlight-story h3 .project-name-sub { font-weight: 600; }
