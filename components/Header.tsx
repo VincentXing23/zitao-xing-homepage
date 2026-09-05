@@ -33,7 +33,7 @@ function LanguageSwitcher({ locale }: { locale: Locale }) {
       params.delete('lang')
     }
     const query = params.toString()
-    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false })
+    router.replace(`${pathname}${query ? `?${query}` : ''}${window.location.hash}`, { scroll: false })
   }
 
   return (
@@ -58,8 +58,12 @@ function LanguageSwitcher({ locale }: { locale: Locale }) {
 export function Header() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const supportsLocale = pathname === '/' || pathname === '/resume'
-  const locale = supportsLocale ? normalizeLocale(searchParams.get('lang') ?? undefined) : 'en'
+  const supportsLocale = true
+  const locale = normalizeLocale(searchParams.get('lang') ?? undefined)
+  const localized = (href: string) => {
+    const [path, hash] = href.split('#')
+    return `${path}${locale === 'zh' ? '?lang=zh' : ''}${hash ? `#${hash}` : ''}`
+  }
 
   useEffect(() => {
     document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en'
@@ -68,8 +72,8 @@ export function Header() {
   return (
     <header className="site-header sticky top-0 z-50 border-b border-white/10 bg-[#0b1222]/88 backdrop-blur-xl">
       <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-3 px-5 py-3 sm:px-8">
-        <Link href="/" className="flex shrink-0 items-center gap-3 font-semibold">
-          <span className="grid size-10 place-items-center rounded-sm bg-[#52f4df] text-sm font-bold text-[#06111a]">
+        <Link href={localized('/')} className="flex shrink-0 items-center gap-3 font-semibold">
+          <span className="grid size-10 place-items-center rounded-sm bg-[#52f4df] text-sm font-bold text-[#06111a] brand-monogram">
             ZX
           </span>
           <span className="hidden text-base text-[var(--foreground)] lg:inline">{locale === 'zh' ? '邢梓韬' : 'Zitao Xing'}</span>
@@ -80,7 +84,7 @@ export function Header() {
               <Link
                 key={item.href}
                 aria-current={!('anchor' in item) && (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? 'page' : undefined}
-                href={'anchor' in item && item.anchor && pathname === '/' ? '#contact' : item.href}
+                href={'anchor' in item && item.anchor && pathname === '/' ? '#contact' : localized(item.href)}
                 className={`shrink-0 rounded-sm px-2.5 py-2 transition hover:bg-[#52f4df]/10 hover:text-[#52f4df] sm:px-3 ${
                   'anchor' in item ? 'hidden sm:block' : ''
                 }`}

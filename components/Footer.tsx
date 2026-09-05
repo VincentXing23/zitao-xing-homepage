@@ -9,7 +9,7 @@ export function Footer() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const supportsLocale = pathname === '/' || pathname === '/resume'
-  const locale = supportsLocale ? normalizeLocale(searchParams.get('lang') ?? undefined) : 'en'
+  const locale = normalizeLocale(searchParams.get('lang') ?? undefined)
 
   return (
     <footer className="border-t border-white/10 bg-[#080d19] text-white">

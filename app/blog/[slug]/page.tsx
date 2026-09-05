@@ -5,9 +5,11 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { getAllPosts, getPostBySlug } from '@/lib/blog'
 import { notFound } from 'next/navigation'
+import { normalizeLocale } from '@/lib/profile'
 
 type PostPageProps = {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ lang?: string }>
 }
 
 export function generateStaticParams() {
@@ -30,7 +32,8 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   }
 }
 
-export default async function BlogPostPage({ params }: PostPageProps) {
+export default async function BlogPostPage({ params, searchParams }: PostPageProps) {
+  const zh = normalizeLocale((await searchParams).lang) === 'zh'
   const { slug } = await params
   const post = getPostBySlug(slug)
 
@@ -41,13 +44,13 @@ export default async function BlogPostPage({ params }: PostPageProps) {
   return (
     <article className="mx-auto max-w-3xl px-5 py-14 sm:px-8">
       <Link
-        href="/blog"
+        href={zh ? '/blog?lang=zh' : '/blog'}
         className="inline-flex min-h-10 items-center gap-2 rounded-sm border border-white/12 bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--foreground)] transition hover:border-[#52f4df]/35 hover:text-[#52f4df]"
       >
         <ArrowLeft size={16} aria-hidden="true" />
-        Blog
+        {zh ? '返回笔记' : 'Back to notes'}
       </Link>
-      <header className="mt-10 border-b border-white/10 pb-8">
+      <header className="page-intro mt-10 border-b border-white/10 pb-8">
         <p className="text-sm font-semibold text-[#52f4df]">{post.date}</p>
         <h1 className="mt-4 text-4xl font-semibold leading-tight text-[var(--foreground)] sm:text-5xl">
           {post.title}

@@ -98,7 +98,7 @@ export default async function ResumePage({ searchParams }: ResumePageProps) {
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
-      <section className="border-b border-white/10 pb-10">
+      <section className="page-intro border-b border-white/10 pb-10">
         <p className="text-sm font-semibold uppercase text-[#52f4df]">{t.eyebrow}</p>
         <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>

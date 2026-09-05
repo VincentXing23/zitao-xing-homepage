@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
+import { ResearchField } from '@/components/ResearchField'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -11,7 +11,9 @@ import {
   Mail,
   MapPin,
   Phone,
-  Sigma,
+  ArrowUpRight,
+  ArrowDown,
+  Network,
   Trophy,
 } from 'lucide-react'
 import { getAllPosts } from '@/lib/blog'
@@ -37,27 +39,27 @@ const copy = {
       ['Research toolkit', 'Python, Neo4j, Qdrant, embeddings, reranking, CUDA'],
     ],
     educationEyebrow: 'Education',
-    educationHeading: 'Mathematics training in Xiamen and San Diego, with graduate study ahead.',
+    educationHeading: 'A foundation in mathematics.',
     projectEyebrow: 'Project Spotlight',
-    projectHeading: 'Exploring GraphRAG support for functional analysis learning.',
+    projectHeading: 'Connecting mathematical knowledge.',
     projectCards: [
       ['Course graph', '95 course objects connected by 216 knowledge-graph relationships.'],
       ['Retrieval pipeline', 'Vector recall, reranking, graph expansion, and evidence-chain display.'],
       ['Technical stack', 'Neo4j, Qdrant, BGE embeddings and reranker, Flask.'],
     ],
     internshipEyebrow: 'Internships',
-    internshipHeading: 'Applied AI work across research reproduction, knowledge systems, and industry practice.',
+    internshipHeading: 'Ideas, tested in the real world.',
     projectsEyebrow: 'Projects & Research',
-    projectsHeading: 'Research projects, engineering prototypes, and academic programs.',
+    projectsHeading: 'From equations to working systems.',
     fullResume: 'Full resume',
     skillsEyebrow: 'Skills & Interests',
-    skillsHeading: 'Tools for mathematical research, machine learning, and rigorous problem solving.',
+    skillsHeading: 'A toolkit for curiosity.',
     honors: 'Honors & Awards',
     blogEyebrow: 'Blog',
-    blogHeading: 'Notes on mathematics, learning, and systems.',
+    blogHeading: 'Thinking, in the open.',
     readBlog: 'Read blog',
     contactEyebrow: 'Contact',
-    contactHeading: 'Open to academic and technical conversations.',
+    contactHeading: 'The next idea starts with a conversation.',
   },
   zh: {
     metadataTitle: '邢梓韬',
@@ -73,27 +75,27 @@ const copy = {
       ['研究工具', 'Python、Neo4j、Qdrant、向量检索、重排、CUDA'],
     ],
     educationEyebrow: '教育经历',
-    educationHeading: '在厦门与圣地亚哥接受数学训练，即将进入研究生阶段。',
+    educationHeading: '以数学为起点。',
     projectEyebrow: '项目聚焦',
-    projectHeading: '探索 GraphRAG 在泛函分析课程学习中的应用。',
+    projectHeading: '让数学知识，彼此连接。',
     projectCards: [
       ['课程图谱', '95 个课程对象，通过 216 条知识图谱关系连接。'],
       ['检索流程', '向量召回、结果重排、图谱扩展与证据链展示。'],
       ['技术栈', 'Neo4j、Qdrant、BGE 向量模型与重排模型、Flask。'],
     ],
     internshipEyebrow: '实习经历',
-    internshipHeading: '围绕科研复现、知识系统与行业实践开展应用型人工智能工作。',
+    internshipHeading: '在真实问题中，验证想法。',
     projectsEyebrow: '科研与项目经历',
-    projectsHeading: '科研训练、工程原型与学术活动。',
+    projectsHeading: '从方程，到可运行的系统。',
     fullResume: '完整简历',
     skillsEyebrow: '技能与兴趣',
-    skillsHeading: '面向数学研究、机器学习与严谨问题求解的工具与能力。',
+    skillsHeading: '好奇心的工具箱。',
     honors: '竞赛与荣誉',
     blogEyebrow: '博客',
-    blogHeading: '关于数学、学习与系统的笔记。',
+    blogHeading: '思考，持续发生。',
     readBlog: '查看博客',
     contactEyebrow: '联系我',
-    contactHeading: '欢迎交流学术与技术问题。',
+    contactHeading: '下一个想法，\n从一次交流开始。',
   },
 } as const
 
@@ -124,320 +126,110 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     throw new Error(`Featured experience not found: ${featuredExperienceId}`)
   }
 
+  const zh = locale === 'zh'
+  const resumeHref = zh ? '/resume?lang=zh' : '/resume'
+  const sectionTitle = (number: string, label: string, title: string) => (
+    <div className="section-heading">
+      <p className="section-eyebrow"><span>{number}</span>{label}</p>
+      <h2>{title}</h2>
+    </div>
+  )
+
   return (
-    <>
-      <section className="cyber-hero relative isolate flex min-h-[78svh] overflow-hidden">
-        <Image
-          src="/static/images/math-ai-hero.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="hero-image absolute inset-0 -z-20 object-cover object-[58%_center]"
-        />
-        <div className="hero-shade absolute inset-0 -z-10" />
-        <div className="mx-auto flex w-full max-w-7xl items-center px-5 py-14 sm:px-8">
-          <div className="hero-copy max-w-3xl">
-            <p className="focus-pill mb-5 inline-flex items-center gap-2 rounded-sm border border-[#52f4df]/25 bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[#52f4df]">
-              <Sigma size={17} aria-hidden="true" />
-              {t.focusPill}
-            </p>
-            <h1 className="hero-title max-w-3xl font-semibold leading-[1.04] text-[var(--foreground)]">
-              {locale === 'zh' ? '邢梓韬' : 'Zitao Xing'}
-            </h1>
-            <p className="discipline-line mt-5 flex flex-wrap items-center gap-x-3 gap-y-2" aria-label={locale === 'zh' ? '交叉研究方向' : 'Interdisciplinary interests'}>
-              {t.intersection.map((discipline, index) => (
-                <span key={discipline} className="inline-flex items-center gap-3">
-                  {index > 0 ? <span className="discipline-cross" aria-hidden="true">×</span> : null}
-                  <span>{discipline}</span>
-                </span>
-              ))}
-            </p>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--body-text)] sm:text-xl">{profileSummary}</p>
-            <div className="hero-actions mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/resume"
-                className="inline-flex min-h-12 items-center gap-2 rounded-sm bg-[#52f4df] px-5 py-3 text-sm font-semibold text-[#06111a] shadow-lg shadow-[#52f4df]/18 transition hover:bg-[#9cfff0]"
-              >
-                {t.viewResume}
-                <ArrowRight size={17} aria-hidden="true" />
-              </Link>
-              <Link
-                href={getLocaleHref(locale)}
-                className="inline-flex min-h-12 items-center gap-2 rounded-sm border border-[#52f4df]/18 bg-[var(--surface)] px-5 py-3 text-sm font-semibold text-[var(--foreground)] transition hover:border-[#52f4df]/45 hover:text-[#52f4df]"
-              >
-                <Download size={17} aria-hidden="true" />
-                {t.downloadResume}
-              </Link>
-              <Link
-                href={`mailto:${contact.email}`}
-                className="inline-flex min-h-12 items-center gap-2 rounded-sm border border-[#52f4df]/18 bg-[var(--surface)] px-5 py-3 text-sm font-semibold text-[var(--foreground)] transition hover:border-[#52f4df]/45 hover:text-[#52f4df]"
-              >
-                <Mail size={17} aria-hidden="true" />
-                {t.email}
-              </Link>
+    <div className="portfolio-home">
+      <section className="hero-v2" id="top">
+        <div className="page-shell hero-layout">
+          <div className="hero-editorial">
+            <p className="hero-kicker"><span className="status-light" />{zh ? '应用数学 / AI FOR SCIENCE' : 'APPLIED MATHEMATICS / AI FOR SCIENCE'}</p>
+            <h1 className={zh ? 'display-name display-name-zh' : 'display-name'}>{zh ? '邢梓韬' : <>Zitao <br />Xing<span className="name-period">.</span></>}</h1>
+            {zh && <p className="name-romanized">ZITAO XING<span> / </span>厦门大学</p>}
+            <div className="hero-intersections">{t.intersection.map((item, i) => <span key={item}>{i > 0 && <b>×</b>}{item}</span>)}</div>
+            <p className="hero-description">{profileSummary}</p>
+            <div className="hero-links">
+              <Link className="button-primary" href="#research">{zh ? '探索我的研究' : 'Explore my work'}<ArrowDown size={17} /></Link>
+              <Link className="button-outline" href={resumeHref}>{t.viewResume}<ArrowUpRight size={18} /></Link>
+              <Link className="icon-link" href={getLocaleHref(locale)} aria-label={t.downloadResume}><Download size={20} /></Link>
             </div>
-            <div className="mt-9 grid max-w-2xl gap-3 text-sm text-[var(--body-text)] sm:grid-cols-2">
-              <span className="inline-flex items-center gap-2">
-                <MapPin size={16} className="text-[#52f4df]" aria-hidden="true" />
-                {contact.location[locale]}
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Phone size={16} className="text-[#52f4df]" aria-hidden="true" />
-                {contact.phone}
-              </span>
-            </div>
+            <div className="hero-location"><MapPin size={14} /><span>{zh ? '中国 · 厦门' : 'Xiamen, China'}</span><i /><span>MATHEMATICS → POSSIBILITY</span></div>
           </div>
+          <ResearchField locale={locale} />
+        </div>
+        <div className="page-shell hero-baseline"><span>RESEARCH / ENGINEERING / EXPLORATION</span><a href="#research">{zh ? '向下探索' : 'SCROLL TO EXPLORE'}<ArrowDown size={13} /></a></div>
+      </section>
+
+      <section className="focus-ribbon">
+        <div className="page-shell focus-ribbon-grid">
+          {t.stats.map(([label, value], i) => <div key={label}><span className="ribbon-number">0{i + 1}</span><div><p>{label}</p><span>{value}</span></div></div>)}
         </div>
       </section>
 
-      <section className="signal-strip border-y border-white/10 bg-[#080d19] text-white">
-        <div className="mx-auto grid max-w-7xl gap-4 px-5 py-7 sm:grid-cols-3 sm:px-8">
-          {t.stats.map(([label, value]) => (
-            <div key={label} className="min-h-24 border-l border-white/18 pl-5">
-              <p className="text-xs font-semibold uppercase text-[#e8ff77]">{label}</p>
-              <p className="mt-2 text-lg font-semibold leading-7">{value}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-          <div>
-            <p className="text-sm font-semibold uppercase text-[#ff70ce]">{t.educationEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[var(--foreground)] sm:text-4xl">{t.educationHeading}</h2>
-          </div>
-          <div className="grid gap-4">
-            {education.map((item) => (
-              <article
-                key={`${item.institution}-${item.period}`}
-                className="rounded-sm border border-white/10 bg-[var(--surface)] p-5 shadow-sm"
-              >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <h3 className="text-xl font-semibold text-[var(--foreground)]">{item.institution}</h3>
-                    <p className="mt-1 text-[var(--body-text)]">{item.role}</p>
-                  </div>
-                  <p className="text-sm font-semibold text-[#52f4df]">{item.period}</p>
-                </div>
-                <p className="mt-3 text-sm text-[var(--muted)]">{item.location}</p>
-                {item.detail ? <p className="mt-3 leading-7 text-[var(--body-text)]">{item.detail}</p> : null}
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="project-spotlight">
-        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
-          <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase text-[#52f4df]">{t.projectEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[var(--foreground)] sm:text-4xl">{t.projectHeading}</h2>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-            <article className="rounded-sm border border-[#52f4df]/18 bg-[var(--surface)] p-6 shadow-sm">
-              <div className="flex items-start gap-4">
-                <span className="grid size-12 shrink-0 place-items-center rounded-sm bg-[#52f4df] text-[#06111a]">
-                  <BrainCircuit size={24} aria-hidden="true" />
-                </span>
-                <div>
-                  <h3 className="text-2xl font-semibold text-[var(--foreground)]">{project.title}</h3>
-                  <p className="mt-2 text-sm font-semibold text-[#52f4df]">
-                    {project.role} · {project.period}
-                  </p>
-                </div>
-              </div>
-              <ul className="mt-6 space-y-4 text-[var(--body-text)]">
-                {project.bullets.map((bullet) => (
-                  <li key={bullet} className="flex gap-3 leading-7">
-                    <span className="mt-3 size-2 shrink-0 rounded-sm bg-[#e8ff77]" />
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
+      <section className="project-spotlight portfolio-section" id="research">
+        <div className="page-shell">
+          {sectionTitle('01', 'PROJECT SPOTLIGHT', t.projectHeading)}
+          <div className="spotlight-layout">
+            <article className="spotlight-story">
+              <div className="project-category"><Network size={17} /><span>{zh ? '泛函分析 × 知识图谱 × 人工智能' : 'FUNCTIONAL ANALYSIS × KNOWLEDGE GRAPHS × AI'}</span></div>
+              <h3>Graph<span>RAG</span><span className="project-name-sub">{zh ? '泛函分析课程知识系统' : 'A knowledge system for functional analysis'}</span></h3>
+              <p className="project-role">{project.role} <span>/</span> {project.period}</p>
+              <p className="project-summary">{project.bullets[0]}</p>
+              <div className="project-numbers"><div><strong>95</strong><span>{zh ? '课程对象' : 'Course objects'}</span></div><div><strong>216</strong><span>{zh ? '知识关联' : 'Graph relationships'}</span></div><div className="project-year"><span>2025<br />— 2026</span><ArrowUpRight size={28} /></div></div>
+              <div className="project-stack">{['Neo4j', 'Qdrant', 'BGE-M3', 'Flask'].map(item => <span key={item}>{item}</span>)}</div>
             </article>
-            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-              {t.projectCards.map(([label, detail]) => (
-                <div key={label} className="rounded-sm border border-white/10 bg-[#0b1222] p-5">
-                  <p className="font-semibold text-[var(--foreground)]">{label}</p>
-                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{detail}</p>
-                </div>
-              ))}
+            <div className="retrieval-panel">
+              <div className="panel-topline"><span><i /> RETRIEVAL ARCHITECTURE</span><BrainCircuit size={19} /></div>
+              <p className="retrieval-question">{zh ? '从一个问题，抵达一条证据链。' : 'From a question to a chain of evidence.'}</p>
+              <ol className="pipeline">
+                {(zh ? [['01', '语义检索', '自然语言 → 向量召回'], ['02', '相关性重排', 'BGE Reranker → 精选证据'], ['03', '图谱扩展', '概念 · 定理 · 例题 · 关系'], ['04', '证据链展示', '关联上下文 → 可追溯证据']] : [['01', 'Semantic retrieval', 'Natural language → vector recall'], ['02', 'Relevance reranking', 'BGE Reranker → selected evidence'], ['03', 'Graph expansion', 'Concepts · theorems · worked examples'], ['04', 'Evidence chain', 'Connected context → traceable evidence']]).map(([n, name, desc]) => <li key={n}><span>{n}</span><div><h4>{name}</h4><p>{desc}</p></div><ArrowDown size={15} /></li>)}
+              </ol>
+              <p className="pipeline-caption">G = (V, E)<span>{zh ? '课程知识图谱 · 本地原型' : 'COURSE KNOWLEDGE GRAPH · LOCAL PROTOTYPE'}</span></p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
-        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase text-[#ff70ce]">{t.internshipEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[var(--foreground)] sm:text-4xl">{t.internshipHeading}</h2>
-          </div>
-          <Link
-            href="/resume"
-            className="inline-flex min-h-11 w-fit items-center gap-2 rounded-sm border border-[#52f4df]/18 px-4 py-2 text-sm font-semibold text-[var(--foreground)] transition hover:border-[#52f4df]/45 hover:text-[#52f4df]"
-          >
-            {t.fullResume}
-            <ArrowRight size={16} aria-hidden="true" />
-          </Link>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          {internships.map((item) => (
-            <article key={item.id} className="rounded-sm border border-white/10 bg-[var(--surface)] p-5">
-              <p className="text-sm font-semibold text-[#52f4df]">{item.period}</p>
-              <h3 className="mt-2 text-xl font-semibold text-[var(--foreground)]">
-                {item.href ? (
-                  <Link href={item.href} target="_blank" rel="noreferrer" className="hover:text-[#52f4df] hover:underline">
-                    {item.title}
-                  </Link>
-                ) : (
-                  item.title
-                )}
-              </h3>
-              <p className="mt-1 text-sm text-[var(--muted)]">
-                {item.organization} · {item.location}
-              </p>
-              <p className="mt-4 leading-7 text-[var(--body-text)]">{item.bullets[0]}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-[#101d30]/65">
-        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
-          <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase text-[#52f4df]">{t.projectsEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[var(--foreground)] sm:text-4xl">{t.projectsHeading}</h2>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {otherProjects.map((item) => (
-              <article key={item.id} className="rounded-sm border border-white/10 bg-[var(--surface)] p-5">
-                <p className="text-sm font-semibold text-[#52f4df]">{item.period}</p>
-                <h3 className="mt-2 text-xl font-semibold text-[var(--foreground)]">
-                  {item.href ? (
-                    <Link
-                      href={item.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:text-[#52f4df] hover:underline"
-                    >
-                      {item.title}
-                    </Link>
-                  ) : (
-                    item.title
-                  )}
-                </h3>
-                <p className="mt-1 text-sm text-[var(--muted)]">
-                  {item.organization} · {item.location}
-                </p>
-                <p className="mt-4 leading-7 text-[var(--body-text)]">{item.bullets[0]}</p>
-              </article>
-            ))}
+      <section className="portfolio-section selected-projects">
+        <div className="page-shell">
+          {sectionTitle('02', t.projectsEyebrow, t.projectsHeading)}
+          <div className="project-archive">
+            {otherProjects.map((item, index) => <article className="archive-card" key={item.id}>
+              <div className="archive-card-top"><span>PROJECT / 0{index + 1}</span>{item.id === 'pde-numerical-methods' ? <span className="archive-symbol">∂</span> : item.id === 'aise-summer-camp' ? <BrainCircuit size={25} /> : <BookOpen size={25} />}</div>
+              <p className="archive-date">{item.period}</p>
+              <h3>{item.href ? <Link href={item.href} target="_blank" rel="noreferrer">{item.title}<ArrowUpRight size={19} /></Link> : item.title}</h3>
+              <p className="archive-summary">{item.bullets[0]}</p>
+              <div className="archive-foot"><span>{item.organization}</span><span>{item.role}</span></div>
+            </article>)}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#0b1222]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <p className="text-sm font-semibold uppercase text-[#52f4df]">{t.skillsEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[var(--foreground)] sm:text-4xl">{t.skillsHeading}</h2>
-            <div className="mt-8 rounded-sm border border-[#e8ff77]/35 bg-[#1d2130] p-5">
-              <div className="flex items-center gap-3">
-                <Trophy className="text-[#e8ff77]" size={22} aria-hidden="true" />
-                <p className="font-semibold text-[var(--foreground)]">{t.honors}</p>
-              </div>
-              <ul className="mt-4 space-y-3 text-sm leading-6 text-[var(--body-text)]">
-                {honors.map((honor) => (
-                  <li key={honor}>{honor}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {skillGroups.map((group, index) => (
-              <article key={group.name} className="rounded-sm border border-white/10 bg-[var(--surface)] p-5">
-                <div className="flex items-center gap-3">
-                  {index === 0 ? (
-                    <Code2 size={20} className="text-[#52f4df]" aria-hidden="true" />
-                  ) : index >= 2 ? (
-                    <BookOpen size={20} className="text-[#52f4df]" aria-hidden="true" />
-                  ) : (
-                    <GraduationCap size={20} className="text-[#52f4df]" aria-hidden="true" />
-                  )}
-                  <h3 className="font-semibold text-[var(--foreground)]">{group.name}</h3>
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {group.items.map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-sm border border-[#52f4df]/16 bg-[#101d30] px-3 py-1.5 text-sm text-[var(--body-text)]"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
+      <section className="portfolio-section">
+        <div className="page-shell experience-layout">
+          <div>{sectionTitle('03', t.internshipEyebrow, t.internshipHeading)}<Link href={resumeHref} className="text-link">{t.fullResume}<ArrowUpRight size={17} /></Link></div>
+          <div className="experience-list">{internships.map((item, index) => <article key={item.id} className="experience-row"><div className="experience-marker">0{index + 1}</div><div><p className="experience-date">{item.period}</p><h3>{item.href ? <Link href={item.href} target="_blank" rel="noreferrer">{item.organization}<ArrowUpRight size={16} /></Link> : item.organization}</h3><p className="experience-role">{item.role} <span>·</span> {item.location}</p><p className="experience-description">{item.bullets[0]}</p></div></article>)}</div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase text-[#ff70ce]">{t.blogEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[var(--foreground)] sm:text-4xl">{t.blogHeading}</h2>
-          </div>
-          <Link
-            href="/blog"
-            className="inline-flex min-h-11 w-fit items-center gap-2 rounded-sm border border-[#52f4df]/18 px-4 py-2 text-sm font-semibold transition hover:border-[#52f4df]/45 hover:text-[#52f4df]"
-          >
-            {t.readBlog}
-            <ArrowRight size={16} aria-hidden="true" />
-          </Link>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          {latestPosts.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="rounded-sm border border-white/10 bg-[var(--surface)] p-5 transition hover:-translate-y-0.5 hover:border-[#52f4df]/35 hover:shadow-lg"
-            >
-              <p className="text-sm font-semibold text-[#52f4df]">{post.date}</p>
-              <h3 className="mt-2 text-xl font-semibold text-[var(--foreground)]">{post.title}</h3>
-              <p className="mt-3 leading-7 text-[var(--body-text)]">{post.summary}</p>
-            </Link>
-          ))}
+      <section className="portfolio-section education-section">
+        <div className="page-shell">
+          {sectionTitle('04', t.educationEyebrow, t.educationHeading)}
+          <div className="education-track">{education.map((item, i) => <article key={`${item.institution}-${item.period}`} className="education-stop"><span className="education-index">{i === 0 ? 'NEXT CHAPTER' : i === 1 ? 'FOUNDATION' : 'VISITING STUDY'}</span><div className="education-node"><GraduationCap size={20} /></div><p className="education-period">{item.period}</p><h3>{item.institution}</h3><p>{item.role}</p><span className="education-location">{item.location}</span>{item.detail && <p className="education-detail">{item.detail}</p>}</article>)}</div>
         </div>
       </section>
 
-      <section id="contact" className="bg-[#080d19] text-white">
-        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <p className="text-sm font-semibold uppercase text-[#e8ff77]">{t.contactEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">{t.contactHeading}</h2>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Link
-              href={`mailto:${contact.email}`}
-              className="inline-flex min-h-14 items-center gap-3 rounded-sm border border-white/16 px-5 py-4 transition hover:border-white/38"
-            >
-              <Mail size={20} aria-hidden="true" />
-              <span className="break-all text-sm font-semibold">{contact.email}</span>
-            </Link>
-            <Link
-              href={contact.phoneHref}
-              className="inline-flex min-h-14 items-center gap-3 rounded-sm border border-white/16 px-5 py-4 transition hover:border-white/38"
-            >
-              <Phone size={20} aria-hidden="true" />
-              <span className="text-sm font-semibold">{contact.phone}</span>
-            </Link>
-          </div>
+      <section className="portfolio-section toolbox-section">
+        <div className="page-shell">
+          {sectionTitle('05', t.skillsEyebrow, t.skillsHeading)}
+          <div className="toolbox-layout"><div className="toolbox-groups">{skillGroups.map((group, i) => <article className="toolbox-group" key={group.name}><h3><span>0{i + 1}</span>{group.name}</h3><div>{group.items.map(item => <span className="skill-token" key={item}>{item}</span>)}</div></article>)}</div><aside className="honors-panel"><Trophy size={26} /><h3>{t.honors}</h3><ul>{honors.map((honor, i) => <li key={honor}><span>0{i + 1}</span>{honor}</li>)}</ul></aside></div>
         </div>
       </section>
-    </>
+
+      <section className="portfolio-section" id="journal">
+        <div className="page-shell"><div className="heading-with-link">{sectionTitle('06', 'FIELD NOTES / '+t.blogEyebrow, t.blogHeading)}<Link href={zh ? '/blog?lang=zh' : '/blog'} className="text-link">{t.readBlog}<ArrowUpRight size={17} /></Link></div>
+          <div className="journal-list">{latestPosts.map((post, i) => <Link key={post.slug} href={`/blog/${post.slug}${zh ? '?lang=zh' : ''}`} className="journal-row"><span className="journal-index">0{i + 1}</span><div><p className="journal-meta">{post.date}<span>{post.tags.slice(0, 2).join(' / ')}</span></p><h3>{post.title}</h3><p>{post.summary}</p></div><ArrowUpRight className="journal-arrow" size={26} /></Link>)}</div>
+        </div>
+      </section>
+
+      <section id="contact" className="contact-v2"><div className="page-shell"><p className="section-eyebrow"><span>07</span>LET’S CONNECT</p><div className="contact-layout"><h2>{t.contactHeading}</h2><div><Link className="contact-email" href={`mailto:${contact.email}`}>{contact.email}<ArrowUpRight size={24} /></Link><p>{zh ? '学术交流 / 科研合作 / 技术探讨' : 'ACADEMIC EXCHANGE / RESEARCH / TECHNOLOGY'}</p><Link className="contact-phone" href={contact.phoneHref}><Phone size={15} />{contact.phone}</Link></div></div><div className="contact-end"><span>∴ KEEP EXPLORING.</span><a href="#top">{zh ? '回到顶部' : 'BACK TO TOP'}<ArrowUpRight size={14} /></a></div></div></section>
+    </div>
   )
 }
