@@ -178,10 +178,6 @@ body > footer {
   background: rgba(255, 112, 206, 0.3);
 }
 
-a {
-  color: inherit;
-}
-
 .article-body {
   color: var(--body-text);
   font-size: 1.04rem;
