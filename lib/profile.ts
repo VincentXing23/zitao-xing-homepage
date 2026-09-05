@@ -244,8 +244,8 @@ const profiles: Record<Locale, ProfileContent> = {
         role: '算法实习生',
         period: '2026年8月—至今',
         bullets: [
-          '围绕 AI for Science 方向开展科研复现，梳理研究问题、方法流程、实验配置与评价方式。',
-          '将复现结果与论文报告或基线结果进行对照，记录实现选择、实验现象与尚待分析的差异。',
+          '复现 AI for Science 相关研究，梳理研究问题、方法流程、实验配置与评估方式。',
+          '将复现结果与论文中的结果或基线结果进行对照，记录实现方案、实验现象及有待进一步分析的差异。',
         ],
       },
       {
@@ -259,7 +259,7 @@ const profiles: Record<Locale, ProfileContent> = {
         href: 'https://github.com/Romanrose/shangtu-notebook',
         bullets: [
           '参与研发面向平板触控场景的 PWA，支持用户在数字纸页上手写人物、地点、经历与作品等内容。',
-          '参与打通手写转写、受控知识图谱检索、来源证据核验与可追溯旁批等流程。',
+          '参与整合手写转写、受控知识图谱检索、来源证据核验和可追溯批注等环节。',
         ],
       },
       {
@@ -272,7 +272,7 @@ const profiles: Record<Locale, ProfileContent> = {
         period: '2026年7月—2026年8月',
         href: 'https://github.com/easyhang/evo_wiki',
         bullets: [
-          '参与 Evo Wiki 的开发与迭代，围绕 AI 原生 Wiki 与 LightRAG 工作流改进知识组织、检索和交付能力。',
+          '参与 Evo Wiki 的开发与迭代，改进 AI 原生 Wiki 和 LightRAG 工作流中的知识组织、检索与交付功能。',
           '探索法律语料的知识图谱抽取与检索增强生成流程，关注实体关系建模、检索质量和证据可追溯性。',
         ],
       },
@@ -287,7 +287,7 @@ const profiles: Record<Locale, ProfileContent> = {
         bullets: [
           '系统学习深度学习与 AI for Science，涵盖神经网络结构、反向传播、优化、损失函数设计、模型训练与评估。',
           '参与神经网络训练项目，完成数据预处理、模型搭建、训练调参与实验结果分析。',
-          '学习 GPU 并行计算与 CUDA 编程基础，理解线程组织、内存管理及科学计算并行加速。',
+          '学习 GPU 并行计算与 CUDA 编程基础，了解线程组织、内存管理，以及如何利用并行计算加速科学计算。',
           '使用 Python 与深度学习框架分析超参数对模型收敛和泛化表现的影响。',
         ],
       },
@@ -300,11 +300,11 @@ const profiles: Record<Locale, ProfileContent> = {
         role: '项目负责人',
         period: '2025年5月—2026年5月',
         bullets: [
-          '主持国家级科研训练项目，面向泛函分析课程构建知识图谱增强检索系统，负责项目统筹、技术整合、系统验证与成果展示。',
-          '将章节、知识点、定理、例题和问题抽象为课程对象，并设计相应的图谱关系。',
+          '主持国家级大学生科研训练项目，为泛函分析课程构建知识图谱增强检索系统，负责项目统筹、技术整合、系统验证与成果展示。',
+          '将章节、知识点、定理、例题和问题建模为课程对象，并设计它们之间的图谱关系。',
           '构建包含 95 个课程对象与 216 条关系的课程知识图谱。',
-          '基于 Neo4j、Qdrant、BAAI/bge-m3、BAAI/bge-reranker-v2-m3 与 Flask 搭建本地 GraphRAG demo。',
-          '验证自然语言检索、向量召回、重排、图谱上下文扩展与证据链展示的端到端流程。',
+          '使用 Neo4j、Qdrant、BAAI/bge-m3、BAAI/bge-reranker-v2-m3 和 Flask 搭建可在本地运行的 GraphRAG 演示系统。',
+          '验证从自然语言检索、向量召回和重排序，到图谱关联知识扩展与证据链展示的完整流程。',
         ],
       },
       {
@@ -318,7 +318,7 @@ const profiles: Record<Locale, ProfileContent> = {
         bullets: [
           '研究扇形域上 Poisson 方程的数值求解，重点关注角点奇性与非光滑结构。',
           '参与设计适配角点奇异结构的 Müntz 型基函数方法，并与代数幂基和神经网络辅助基线进行比较。',
-          '完成一维逼近、单模态与双模态 Poisson 基准及奇异指数消融实验。',
+          '完成一维逼近实验、单模态与双模态 Poisson 基准测试，以及奇异指数消融实验。',
         ],
       },
       {
@@ -332,7 +332,7 @@ const profiles: Record<Locale, ProfileContent> = {
         bullets: [
           '协助整理基金产品、市场动态、客户服务与机构业务流程相关材料。',
           '使用 Excel、PPT 完成市场信息、产品资料与同业数据的汇总、清洗、排版和展示。',
-          '协助准备会议、客户资料归档、路演及培训材料。',
+          '协助筹备会议、归档客户资料，并整理路演及培训材料。',
         ],
       },
     ],
@@ -360,7 +360,7 @@ const profiles: Record<Locale, ProfileContent> = {
       },
     ],
     profileSummary:
-      '厦门大学应用数学（运筹学）硕士研究生，关注 AI for Science、Agent 开发、数值方法、机器学习、GraphRAG 与图算法。',
+      '厦门大学应用数学专业硕士研究生，研究方向为运筹学。目前关注 AI for Science、Agent 开发、数值方法、机器学习、GraphRAG 与图算法。',
   },
 }
 

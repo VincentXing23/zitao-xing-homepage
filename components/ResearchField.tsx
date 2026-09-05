@@ -123,7 +123,7 @@ export function ResearchField({ locale }: { locale: 'zh' | 'en' }) {
   return (
     <figure className="research-field">
       <div className="field-heading"><span><i /> DYNAMICAL SYSTEMS</span>
-        <button className="field-toggle" onClick={() => setPaused(!paused)} disabled={reduced} aria-label={locale === 'zh' ? (paused ? '播放数学可视化' : '暂停数学可视化') : (paused ? 'Play visualization' : 'Pause visualization')} aria-pressed={paused || reduced}>
+        <button className="field-toggle" onClick={() => setPaused(!paused)} disabled={reduced} aria-label={locale === 'zh' ? (paused ? '继续播放轨迹动画' : '暂停轨迹动画') : (paused ? 'Play visualization' : 'Pause visualization')} aria-pressed={paused || reduced}>
           {paused || reduced ? <Play size={14} /> : <Pause size={14} />}
           <span>{reduced ? (locale === 'zh' ? '静态' : 'Static') : (paused ? (locale === 'zh' ? '播放' : 'Play') : (locale === 'zh' ? '暂停' : 'Pause'))}</span>
         </button>
@@ -133,7 +133,7 @@ export function ResearchField({ locale }: { locale: 'zh' | 'en' }) {
         <span className="field-axis field-axis-y">z</span><span className="field-axis field-axis-x">x →</span>
         <span className="field-equation">ẋ = σ(y − x)<br />ẏ = x(ρ − z) − y<br />ż = xy − βz</span>
       </div>
-      <figcaption className="field-caption"><div><span className="field-index">FIG. 01</span><strong>{locale === 'zh' ? '混沌之中，自有秩序。' : 'Order within chaos.'}</strong></div><span>LORENZ ATTRACTOR<br />σ = 10 · ρ = 28 · β = 8/3</span></figcaption>
+      <figcaption className="field-caption"><div><span className="field-index">FIG. 01</span><strong>{locale === 'zh' ? '洛伦兹吸引子：混沌中的秩序' : 'Order within chaos.'}</strong></div><span>LORENZ ATTRACTOR<br />σ = 10 · ρ = 28 · β = 8/3</span></figcaption>
     </figure>
   )
 }
