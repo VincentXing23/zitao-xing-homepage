@@ -229,7 +229,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         </div>
       </section>
 
-      <section className="bg-[#101d30]">
+      <section className="project-spotlight">
         <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
           <div className="mb-10 max-w-3xl">
             <p className="text-sm font-semibold uppercase text-[#52f4df]">{t.projectEyebrow}</p>
