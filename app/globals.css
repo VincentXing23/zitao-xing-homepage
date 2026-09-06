@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
 
 :root {
   color-scheme: dark;
@@ -260,6 +261,18 @@ main a.border:hover {
 }
 .article-body pre code { background: transparent; padding: 0; }
 .article-body blockquote { border-left: 2px solid var(--coral); padding-left: 1rem; }
+.article-body .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid rgba(82, 244, 223, 0.22);
+  background: rgba(11, 18, 34, 0.8);
+}
+.article-body .katex {
+  color: #e4f9f5;
+  font-size: 1.08em;
+}
 @media (max-width: 640px) {
   .cyber-hero { min-height: 72svh; }
   .hero-shade { background: linear-gradient(90deg, #070b14f5, #070b14c9), linear-gradient(0deg, #070b14, transparent); }

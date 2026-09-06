@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
 import { getAllPosts, getPostBySlug } from '@/lib/blog'
 import { notFound } from 'next/navigation'
 import { normalizeLocale } from '@/lib/profile'
@@ -65,7 +67,9 @@ export default async function BlogPostPage({ params, searchParams }: PostPagePro
         </div>
       </header>
       <div className="article-body mt-8">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]}>
+          {post.content}
+        </ReactMarkdown>
       </div>
     </article>
   )
