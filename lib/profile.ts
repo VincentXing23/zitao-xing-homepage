@@ -10,7 +10,7 @@ export type EducationItem = {
 
 export type ExperienceItem = {
   id: string
-  kind: 'internship' | 'project'
+  kind: 'internship' | 'leadership' | 'project'
   title: string
   organization: string
   location: string
@@ -62,7 +62,7 @@ const profiles: Record<Locale, ProfileContent> = {
       {
         institution: 'Xiamen University',
         location: 'Xiamen, China',
-        role: 'B.S. in Mathematics',
+        role: 'B.S. in Mathematics and Applied Mathematics',
         period: 'Sep. 2022 - Jun. 2026',
         detail: '',
       },
@@ -75,6 +75,19 @@ const profiles: Record<Locale, ProfileContent> = {
       },
     ],
     experiences: [
+      {
+        id: 'wiserclub-agent-development',
+        kind: 'leadership',
+        title: 'WISERCLUB (Data Science Club)',
+        organization: 'Xiamen University',
+        location: 'Xiamen, China',
+        role: 'Head of Agent Application Development, Machine Learning Group',
+        period: 'Sep. 2026 - Present',
+        bullets: [
+          'Lead the planning and team collaboration for AI agent application development, developing learning and practice roadmaps around large language models, RAG, tool use, and workflow orchestration while organizing technical talks, project selection, and code reviews.',
+          'Coordinate the full development lifecycle of agent applications, from requirements analysis, technology selection, and task breakdown to prototype iteration, advancing applications for learning, research, and campus services while documenting technical practices and reusable components.',
+        ],
+      },
       {
         id: 'shanghai-ai-research-institute',
         kind: 'internship',
@@ -217,12 +230,12 @@ const profiles: Record<Locale, ProfileContent> = {
         location: '中国厦门',
         role: '应用数学（运筹学）硕士研究生',
         period: '2026年9月入学',
-        detail: '已获推荐免试研究生录取资格。',
+        detail: '',
       },
       {
         institution: '厦门大学',
         location: '中国厦门',
-        role: '数学专业本科',
+        role: '数学与应用数学',
         period: '2022年9月—2026年6月',
         detail: '',
       },
@@ -235,6 +248,19 @@ const profiles: Record<Locale, ProfileContent> = {
       },
     ],
     experiences: [
+      {
+        id: 'wiserclub-agent-development',
+        kind: 'leadership',
+        title: 'WISERCLUB（数据科学俱乐部）',
+        organization: '厦门大学',
+        location: '福建厦门',
+        role: '机器学习小组 · Agent 应用开发部负责人',
+        period: '2026年9月—至今',
+        bullets: [
+          '负责 AI Agent 应用开发方向的规划与团队协作，围绕大语言模型、RAG、工具调用和工作流编排制定学习与实践路线，组织技术分享、项目选题和代码评审。',
+          '统筹智能体应用从需求分析、技术选型、任务拆解到原型迭代的开发流程，推进其在学习、科研和校园服务场景中的应用，并沉淀技术文档与可复用组件。',
+        ],
+      },
       {
         id: 'shanghai-ai-research-institute',
         kind: 'internship',

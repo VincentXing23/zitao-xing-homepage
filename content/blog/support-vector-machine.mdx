@@ -1,0 +1,154 @@
+---
+title: "支持向量机：从最大间隔到核技巧"
+date: "2026-09-16"
+summary: "用一条分界线理解 SVM 的核心目标，再推导软间隔与核函数，并给出一套可复用的 sklearn 训练流程。"
+tags:
+  - machine learning
+  - classification
+  - optimization
+  - Python
+---
+
+支持向量机（Support Vector Machine, SVM）最迷人的地方，是它把“分类边界该画在哪里”变成了一个非常几何化的优化问题：不只要把两类样本分开，还要让边界离两边最近的样本都尽可能远。
+
+这篇笔记以二分类为主线。先看线性可分时的最大间隔，再加入允许误分的软间隔，最后解释核函数为什么能在不显式扩维的情况下处理非线性边界。
+
+## 一条直线不只负责分开样本
+
+对二分类数据，令特征为 $x\in\mathbb{R}^d$，标签为 $y\in\{-1,+1\}$。线性分类器写成
+
+$$
+f(x)=w^\top x+b.
+$$
+
+预测时取 $\operatorname{sign}(f(x))$。若存在 $w,b$，使每个训练样本都满足
+
+$$
+y_i(w^\top x_i+b)>0,
+$$
+
+数据就是线性可分的。但满足这个条件的分界线通常有很多条；SVM 关心的是其中最“稳”的那一条。
+
+把 $w,b$ 同时按正数缩放并不会改变分界面，因此可以规定离边界最近的样本满足
+
+$$
+y_i(w^\top x_i+b)=1.
+$$
+
+此时两条支撑超平面为 $w^\top x+b=1$ 与 $w^\top x+b=-1$，它们之间的间隔宽度是
+
+$$
+\frac{2}{\lVert w\rVert}.
+$$
+
+最大化间隔等价于最小化 $\lVert w\rVert^2$：
+
+$$
+\begin{aligned}
+\min_{w,b}\quad & \frac{1}{2}\lVert w\rVert^2\\
+\text{s.t.}\quad & y_i(w^\top x_i+b)\ge 1,\quad i=1,\ldots,n.
+\end{aligned}
+$$
+
+真正决定边界的是恰好贴在两条支撑超平面上的少数点，它们就是**支持向量**。远离边界的数据点稍微移动，通常不会改变最优解；靠近边界的点则会。这也是 SVM 对高维、样本数不特别大的数据常常表现不错的直觉来源。
+
+## 现实数据不可分：软间隔与 $C$
+
+现实中的类别往往会重叠，完全满足硬间隔约束可能不现实。软间隔 SVM 为每个样本加入松弛变量 $\xi_i\ge0$：
+
+$$
+\begin{aligned}
+\min_{w,b,\xi}\quad & \frac{1}{2}\lVert w\rVert^2+C\sum_{i=1}^n\xi_i\\
+\text{s.t.}\quad & y_i(w^\top x_i+b)\ge1-\xi_i.
+\end{aligned}
+$$
+
+这里的 $C$ 是最重要的超参数之一。
+
+- $C$ 较大：更严厉地惩罚训练集中的间隔违例，边界会更努力贴合训练数据，也更可能受噪声影响。
+- $C$ 较小：更愿意容忍一些违例，以换取更宽的间隔和更强的正则化。
+
+从损失函数看，软间隔 SVM 也可以理解为最小化正则项与 hinge loss 的组合：
+
+$$
+\max(0,1-y_i f(x_i)).
+$$
+
+若样本不仅被分对，而且离边界足够远，损失为零；若落进间隔带，或者直接被分错，就会产生线性惩罚。这一点与逻辑回归使用的对数损失不同：SVM 更关注边界附近那些“难分”的样本。
+
+## 核技巧：不画出高维坐标，也能在高维分类
+
+有些数据无法用直线或平面分开，例如同心圆。一个直接思路是手工构造非线性特征 $\phi(x)$，再在线性空间中训练 SVM。问题是 $\phi(x)$ 可能非常高维，甚至无限维。
+
+SVM 的对偶形式只需要样本间的内积 $\phi(x_i)^\top\phi(x_j)$。如果存在函数 $K$，满足
+
+$$
+K(x_i,x_j)=\phi(x_i)^\top\phi(x_j),
+$$
+
+就可以直接计算 $K$，而无需显式构造 $\phi$。这就是**核技巧**。
+
+常见核函数如下：
+
+| 核函数 | 形式 | 适合的直觉 |
+| --- | --- | --- |
+| 线性核 | $K(x,z)=x^\top z$ | 特征已经足够表达问题，或维度很高、样本很多 |
+| 多项式核 | $K(x,z)=(\gamma x^\top z+r)^p$ | 需要有限阶的特征交互 |
+| RBF（高斯）核 | $K(x,z)=\exp(-\gamma\lVert x-z\rVert^2)$ | 边界平滑但非线性；实践中的常用起点 |
+
+RBF 核中的 $\gamma$ 决定一个样本的影响范围。$\gamma$ 大时，每个点的作用范围很小，边界可以很曲折；$\gamma$ 小时，影响范围更广，边界会更平滑。它和 $C$ 一样需要通过验证集或交叉验证来选择。
+
+## 一套不容易踩坑的 sklearn 流程
+
+SVM 对特征尺度敏感：一个取值范围很大的特征会主导距离和内积。因此标准化应当放进 `Pipeline`，避免在交叉验证前对全部数据 `fit` 而造成数据泄漏。
+
+~~~python
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+
+X, y = load_breast_cancer(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
+
+pipeline = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", SVC(kernel="rbf")),
+])
+
+search = GridSearchCV(
+    pipeline,
+    param_grid={
+        "model__C": [0.1, 1, 10, 100],
+        "model__gamma": ["scale", 0.01, 0.1, 1],
+    },
+    scoring="roc_auc",
+    cv=5,
+    n_jobs=-1,
+)
+search.fit(X_train, y_train)
+
+print(search.best_params_)
+print(search.score(X_test, y_test))
+~~~
+
+上面有三个容易被忽略的决定：
+
+1. `stratify=y` 让训练集与测试集保留大致相同的类别比例，尤其适合类别不均衡的数据。
+2. 指标选 `roc_auc` 只是一个示例。若关心少数类召回率、误报成本或概率校准，应换成匹配业务目标的指标。
+3. `SVC` 的 `probability=True` 会额外进行概率校准，训练更慢；而且“分数可排序”不等于“概率已校准”。需要可靠概率时，应单独检查校准曲线，必要时使用 `CalibratedClassifierCV`。
+
+## 何时该用，何时不该硬用
+
+SVM 很适合中小规模、特征明确且边界可能复杂的分类问题；线性 SVM 也常用于文本等稀疏高维特征。它的局限同样清晰：核 SVM 的训练和预测成本会随样本数明显上升，面对数十万甚至更多样本时，线性模型、树模型或近似方法通常更合适。
+
+在开始调核函数之前，先检查三件事往往更有价值：标签是否可靠、特征是否泄漏、验证方式是否模拟了真实部署场景。模型选择不是“哪种算法更强”，而是把数据规模、错误代价和可解释性一起放进同一个约束条件里。
+
+## 参考资料
+
+1. C. Cortes and V. Vapnik, “Support-Vector Networks,” *Machine Learning*, 1995. [论文 DOI](https://doi.org/10.1007/BF00994018)
+2. B. Schölkopf and A. J. Smola, *Learning with Kernels*, MIT Press, 2002. [书籍页面](https://mitpress.mit.edu/9780262194754/learning-with-kernels/)
+3. scikit-learn 文档，[SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) 与 [SVM 用户指南](https://scikit-learn.org/stable/modules/svm.html)

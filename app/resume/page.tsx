@@ -16,6 +16,7 @@ const copy = {
     alternateDownload: '下载中文 PDF',
     education: 'Education',
     internships: 'Internship Experience',
+    leadership: 'Leadership & Activities',
     projects: 'Research & Projects',
     honors: 'Honors & Awards',
     skills: 'Skills & Interests',
@@ -28,6 +29,7 @@ const copy = {
     alternateDownload: 'Download English PDF',
     education: '教育经历',
     internships: '实习经历',
+    leadership: '校园与组织经历',
     projects: '科研与项目经历',
     honors: '竞赛与荣誉',
     skills: '技能与兴趣',
@@ -94,6 +96,7 @@ export default async function ResumePage({ searchParams }: ResumePageProps) {
   const t = copy[locale]
   const { education, experiences, honors, profileSummary, skillGroups } = getProfile(locale)
   const internships = experiences.filter((item) => item.kind === 'internship')
+  const leadership = experiences.filter((item) => item.kind === 'leadership')
   const projects = experiences.filter((item) => item.kind === 'project')
 
   return (
@@ -160,6 +163,7 @@ export default async function ResumePage({ searchParams }: ResumePageProps) {
       </section>
 
       <ExperienceSection title={t.internships} items={internships} />
+      <ExperienceSection title={t.leadership} items={leadership} />
       <ExperienceSection title={t.projects} items={projects} />
 
       <section className="grid gap-8 border-t border-white/10 py-10 lg:grid-cols-2">
